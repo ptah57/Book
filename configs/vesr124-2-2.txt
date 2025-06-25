@@ -1,0 +1,138 @@
+hostname vesr124-2-2
+
+object-group service TRACEROUTE
+  description "TRACEROUTE"
+  port-range 33434-33529
+  port-range 15121
+exit
+object-group service SSH
+  description "SSH"
+  port-range 22
+exit
+
+syslog max-files 3
+syslog file-size 512
+syslog file tmpsys:syslog/default
+  severity info
+exit
+
+username admin
+  password encrypted $6$DJXxBotgkalhpvdS$M4X3JJZLIYAo.H2NACe4iBNthGcrQ7FpIuxwTSG8PZFmJGw8oqdyrNMoy1b8CM7aKxfmoxC4jyZpXHHKDtWBc0
+exit
+username sshuser
+  password encrypted $6$QwpWsLDV.GfE04QE$j1WSJOYdIY806fNiyC5YIthELjRBGmE32L0RQHzrp4l1kf1NHvul9edbOF/pvQXmCWK58etaTiZBhDj5rAHzZ/
+  privilege 15
+exit
+
+security zone trusted
+exit
+security zone untrusted
+exit
+
+router ospf 1
+  area 0.0.0.0
+    enable
+  exit
+  enable
+exit
+
+interface gigabitethernet 1/0/1
+  description "WAN"
+  security-zone untrusted
+  ip address 192.168.222.200/24
+exit
+interface gigabitethernet 1/0/2
+  description "LAN"
+  security-zone trusted
+  ip address 192.168.200.1/24
+  ip ospf instance 1
+  ip ospf
+exit
+tunnel gre 1
+  ttl 64
+  security-zone untrusted
+  local address 192.168.222.200
+  remote address 192.168.222.100
+  ip address 172.16.100.2/24
+  ip ospf instance 1
+  ip ospf
+  enable
+exit
+
+security zone-pair trusted self
+  rule 1
+    description "ICMP"
+    action permit
+    match protocol icmp
+    enable
+  exit
+exit
+security zone-pair untrusted self
+  rule 1
+    description "ICMP"
+    action permit
+    match protocol icmp
+    enable
+  exit
+  rule 2
+    description "GRE"
+    action permit
+    match protocol gre
+    enable
+  exit
+  rule 3
+    description "OSPF"
+    action permit
+    match protocol ospf
+    enable
+  exit
+  rule 22
+    description "SSH"
+    action permit
+    match protocol tcp
+    match destination-port SSH
+    enable
+  exit
+exit
+security zone-pair trusted untrusted
+  rule 1
+    description "ICMP"
+    action permit
+    match protocol icmp
+    enable
+  exit
+  rule 2
+    description "TRACEROUTE"
+    action permit
+    match protocol udp
+    match destination-port TRACEROUTE
+    enable
+  exit
+exit
+security zone-pair untrusted trusted
+  rule 1
+    description "ICMP"
+    action permit
+    match protocol icmp
+    enable
+  exit
+  rule 2
+    description "TRACEROUTE"
+    action permit
+    match protocol udp
+    match destination-port TRACEROUTE
+    enable
+  exit
+exit
+
+security passwords default-expired
+ip route 0.0.0.0/0 192.168.222.100
+
+ip ssh server
+
+ntp enable
+ntp broadcast-client enable
+
+licence-manager
+  host address elm.eltex-co.ru
+exit

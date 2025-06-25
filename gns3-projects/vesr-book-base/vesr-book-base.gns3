@@ -1038,7 +1038,7 @@
             {
                 "compute_id": "local",
                 "console": 5006,
-                "console_auto_start": false,
+                "console_auto_start": true,
                 "console_type": "telnet",
                 "custom_adapters": [],
                 "first_port_name": null,
@@ -1193,7 +1193,7 @@
                 "compute_id": "vm",
                 "console": 5007,
                 "console_auto_start": true,
-                "console_type": "telnet",
+                "console_type": "vnc",
                 "custom_adapters": [],
                 "first_port_name": "",
                 "height": 45,

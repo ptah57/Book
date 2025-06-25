@@ -1,0 +1,20 @@
+Jun 24 19:15:55.315 HYPERVISOR: Release 0.2.17-x86/Windows (tag 2017072410)
+Jun 24 19:15:55.316 HYPERVISOR: Started on TCP port = 50223.
+Jun 24 19:15:55.818 HYPERVISOR: exec_cmd: hypervisor version 
+Jun 24 19:15:55.820 HYPERVISOR: exec_cmd: hypervisor working_dir C:\projects\vesr-gns3\Book_vesr-gns3\gns3-projects\vesr-book-base\project-files\dynamips 
+Jun 24 19:15:55.820 GENERAL: working_dir=C:\projects\vesr-gns3\Book_vesr-gns3\gns3-projects\vesr-book-base\project-files\dynamips
+Jun 24 19:15:55.821 HYPERVISOR: exec_cmd: ethsw create Switch2 
+Jun 24 19:15:56.780 HYPERVISOR: exec_cmd: nio create_udp udp-a7329180-3215-422c-846d-04a7e48dfb9e 13006 192.168.146.133 20002 
+Jun 24 19:15:56.781 HYPERVISOR: exec_cmd: ethsw add_nio Switch2 udp-a7329180-3215-422c-846d-04a7e48dfb9e 
+Jun 24 19:15:56.785 HYPERVISOR: exec_cmd: ethsw set_access_port Switch2 udp-a7329180-3215-422c-846d-04a7e48dfb9e 1 
+Jun 24 19:15:56.802 HYPERVISOR: exec_cmd: nio create_udp udp-3ac9418a-dd44-4003-b2d4-d098f769e6c3 13008 127.0.0.1 13007 
+Jun 24 19:15:56.803 HYPERVISOR: exec_cmd: ethsw add_nio Switch2 udp-3ac9418a-dd44-4003-b2d4-d098f769e6c3 
+Jun 24 19:15:56.816 HYPERVISOR: exec_cmd: ethsw set_access_port Switch2 udp-3ac9418a-dd44-4003-b2d4-d098f769e6c3 1 
+Jun 24 19:15:56.875 HYPERVISOR: exec_cmd: nio create_udp udp-357faa8d-b651-48c4-9cec-0d76a74d10ba 13010 127.0.0.1 13009 
+Jun 24 19:15:56.875 HYPERVISOR: exec_cmd: ethsw add_nio Switch2 udp-357faa8d-b651-48c4-9cec-0d76a74d10ba 
+Jun 24 19:15:56.877 HYPERVISOR: exec_cmd: ethsw set_access_port Switch2 udp-357faa8d-b651-48c4-9cec-0d76a74d10ba 1 
+Jun 24 19:15:57.066 HYPERVISOR: exec_cmd: nio create_udp udp-dafbe9c2-b555-402f-8372-5fc65e06f88a 13012 192.168.146.133 20006 
+Jun 24 19:15:57.066 HYPERVISOR: exec_cmd: ethsw add_nio Switch2 udp-dafbe9c2-b555-402f-8372-5fc65e06f88a 
+Jun 24 19:15:57.094 HYPERVISOR: exec_cmd: ethsw set_access_port Switch2 udp-dafbe9c2-b555-402f-8372-5fc65e06f88a 1 
+Jun 24 19:31:47.828 HYPERVISOR: Stopped.
+Jun 24 19:31:47.944 GENERAL: reset done.
