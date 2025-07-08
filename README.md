@@ -13,3 +13,4 @@
 а может чем черт не шутит и сделать кнопку для доната на кофе автору здесь.
 
 для поддержки автора - https://ptah57.github.io/Book_vesr-gns3/
+[![Кнопка доната](https://img.shields.io/badge/Поддержать_автора-Boosty-6c5ce7)](https://boosty.to/rinatxf/donate)
