@@ -16,4 +16,4 @@
 
 Написана 11 глава. Настройка динамических туннелей между филиалами с использованием протоколов NHRP и eBGP. Текст в формате PDF размещён на Boosty-
 
-(https://boosty.to/rinatxf/posts/5f4f7eb0-97ca-4a32-8970-30e22abfd186?share=success_publish_link
+https://boosty.to/rinatxf/posts/5f4f7eb0-97ca-4a32-8970-30e22abfd186?share=success_publish_link
