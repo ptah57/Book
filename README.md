@@ -13,3 +13,5 @@
 а может чем черт не шутит и сделать кнопку для доната на кофе автору здесь.
 
 для поддержки автора - [![Кнопка доната](https://img.shields.io/badge/Поддержать_автора-Boosty-6c5ce7)](https://boosty.to/rinatxf/donate)
+
+Написана 11 глава. Настройка динамических туннелей между филиалами с использованием протоколов NHRP и eBGP. Текст в формате PDF размещён на Boosty-[![Кнопка доната](https://img.shields.io/badge/Плучить текст главы-6c5ce7)](https://boosty.to/rinatxf/posts/5f4f7eb0-97ca-4a32-8970-30e22abfd186?share=success_publish_link)
