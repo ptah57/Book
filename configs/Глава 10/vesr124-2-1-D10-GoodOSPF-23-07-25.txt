@@ -1,0 +1,341 @@
+hostname vesr124-2-1
+
+object-group service dhcp_service
+  port-range 67
+exit
+object-group service dhcp_client
+  port-range 68
+exit
+object-group service ssh
+  port-range 22
+exit
+object-group service SSH
+  port-range 2222
+exit
+object-group service TRACEROUTE
+  port-range 33434-33534
+exit
+
+object-group network WAN
+  ip address-range 10.10.10.2
+exit
+object-group network clients
+  ip address-range 192.168.10.0-192.168.10.254
+  ip address-range 192.168.151.1-192.168.151.254
+  ip address-range 10.10.10.1-10.10.10.254
+  ip address-range 10.10.20.1-10.10.20.254
+  ip address-range 172.16.2.1-172.16.2.254
+exit
+object-group network SERVER_IP
+  ip address-range 172.16.1.2
+exit
+object-group network LAN_NETWORK
+  ip address-range 172.16.1.1-172.16.1.254
+exit
+object-group network LAN_GW
+  ip address-range 172.16.1.1
+exit
+
+syslog max-files 3
+syslog file-size 512
+syslog file tmpsys:syslog/default
+  severity info
+exit
+syslog console
+  virtual-serial
+exit
+
+username admin
+  password encrypted $6$kx1jB3DT6zH05CQ7$WqbKGSvl/35jvx.NKDc6R5NpD5uy2623zfbWAOTPhNOQgnR.zXxQzlgYwESdboxOWSyhPPNojy0Q0.pMvR6Ld/
+exit
+username rinat
+  password encrypted $6$T37FYJy.i38S36O0$vHt9c.g0yzphZ5PJNwkmOvJJ36dSvMbr7qRSJnDWhprk4f8OI5d1oNdT6jmqUsXMbfgRFDd4RK3Ugeu0jLZ9w/
+  privilege 15
+exit
+
+domain lookup enable
+
+security zone UNTRUST
+exit
+security zone TRUST
+exit
+
+router ospf 1
+  area 0.0.0.0
+    enable
+  exit
+  enable
+exit
+
+interface gigabitethernet 1/0/1
+  description "WAN"
+  security-zone UNTRUST
+  ip address 10.10.10.2/24
+exit
+interface gigabitethernet 1/0/2
+  description "LAN_NET"
+  security-zone TRUST
+  ip address 172.16.1.1/24
+  ip ospf instance 1
+  ip ospf
+exit
+interface gigabitethernet 1/0/3
+  shutdown
+  ip address dhcp
+exit
+
+tunnel gre 3
+  ttl 18
+  mtu 1416
+  security-zone UNTRUST
+  local address 10.10.10.2
+  remote address 10.10.30.2
+  ip address 192.168.200.1/24
+  ip ospf instance 1
+  ip ospf
+  enable
+exit
+tunnel gre 10
+  ttl 18
+  security-zone UNTRUST
+  local address 10.10.10.2
+  remote address 10.10.20.2
+  ip address 192.168.100.1/24
+  ip ospf instance 1
+  ip ospf
+  enable
+exit
+
+security zone-pair TRUST self
+  rule 1
+    description "ICMP"
+    action permit
+    match protocol icmp
+    enable
+  exit
+  rule 2
+    action permit
+    match protocol udp
+    enable
+  exit
+  rule 3
+    description "GRE"
+    action permit
+    match protocol gre
+    enable
+  exit
+  rule 4
+    action permit
+    match protocol udp
+    match source-port object-group dhcp_client
+    match destination-port object-group dhcp_service
+    enable
+  exit
+  rule 10
+    action permit
+    match protocol tcp
+    enable
+  exit
+exit
+security zone-pair TRUST UNTRUST
+  rule 1
+    action permit
+    match protocol icmp
+    enable
+  exit
+  rule 2
+    action permit
+    match protocol udp
+    enable
+  exit
+  rule 3
+    description "GRE"
+    action permit
+    match protocol gre
+    enable
+  exit
+  rule 10
+    action permit
+    match protocol tcp
+    enable
+  exit
+exit
+security zone-pair UNTRUST self
+  rule 1
+    description "ICMP"
+    action permit
+    match protocol icmp
+    enable
+  exit
+  rule 2
+    description "GRE"
+    action permit
+    match protocol gre
+    enable
+  exit
+  rule 3
+    description "TRACEROUTE"
+    action permit
+    match protocol udp
+    enable
+  exit
+  rule 4
+    description "ESP"
+    action permit
+    match protocol esp
+    enable
+  exit
+  rule 5
+    description "AH"
+    action permit
+    match protocol ah
+    enable
+  exit
+  rule 9
+    description "OSPF"
+    action permit
+    match protocol ospf
+    enable
+  exit
+  rule 10
+    action permit
+    match protocol tcp
+    match source-address object-group clients
+    match destination-address object-group WAN
+    match destination-port object-group ssh
+    enable
+  exit
+exit
+security zone-pair UNTRUST TRUST
+  rule 1
+    description "ICMP"
+    action permit
+    match protocol icmp
+    enable
+  exit
+  rule 2
+    description "GRE"
+    action permit
+    match protocol gre
+    enable
+  exit
+  rule 3
+    description "TRACEROUTE"
+    action permit
+    match protocol udp
+    enable
+  exit
+  rule 10
+    action permit
+    match protocol tcp
+    match destination-address object-group SERVER_IP
+    enable
+  exit
+exit
+
+security ike proposal ike_prop1
+  authentication algorithm md5
+  encryption algorithm aes128
+  dh-group 2
+exit
+
+security ike policy ike_pol1
+  pre-shared-key ascii-text encrypted AC94107EA75F5AFF
+  proposal ike_prop1
+exit
+
+security ike gateway ike_gw1
+  ike-policy ike_pol1
+  local address 10.10.10.2
+  local network 10.10.10.2/32 protocol gre
+  remote address 10.10.20.2
+  remote network 10.10.20.2/32 protocol gre
+  mode policy-based
+exit
+security ike gateway ike_gw2
+  ike-policy ike_pol1
+  local address 10.10.10.2
+  local network 10.10.10.2/32 protocol gre
+  remote address 10.10.30.2
+  remote network 10.10.30.2/32 protocol gre
+  mode policy-based
+exit
+
+security ipsec proposal ipsec_prop1
+  authentication algorithm md5
+  encryption algorithm aes128
+  pfs dh-group 2
+exit
+
+security ipsec policy ipsec_pol1
+  proposal ipsec_prop1
+exit
+
+security ipsec vpn ipsec1
+  ike establish-tunnel route
+  ike gateway ike_gw1
+  ike ipsec-policy ipsec_pol1
+  enable
+exit
+security ipsec vpn ipsec2
+  ike establish-tunnel route
+  ike gateway ike_gw2
+  ike ipsec-policy ipsec_pol1
+  enable
+exit
+
+security passwords default-expired
+
+nat destination
+  pool SERVER_POOL
+    ip address 172.16.1.2
+    ip port 22
+  exit
+  ruleset DNAT
+    from zone UNTRUST
+    rule 10
+      match protocol tcp
+      match destination-port object-group SSH
+      action destination-nat pool SERVER_POOL
+      enable
+    exit
+  exit
+exit
+
+nat source
+  pool WAN
+    ip address-range 10.10.10.2
+  exit
+  ruleset SNAT
+    to zone UNTRUST
+    rule 1
+      match source-address object-group LAN_NETWORK
+      action source-nat interface
+      enable
+    exit
+  exit
+exit
+
+ip dhcp-server
+ip dhcp-server pool LAN_NETWORK
+  network 172.16.1.0/24
+  default-lease-time 003:00:00
+  address-range 172.16.1.3-172.16.1.254
+  address 172.16.1.2 mac-address 0c:ec:ff:84:00:00
+  default-router 172.16.1.1
+  dns-server 77.88.8.8
+exit
+
+ip route 0.0.0.0/0 10.10.10.1
+ip route 10.10.20.0/24 10.10.20.1
+ip route 10.10.30.0/24 10.10.30.1
+ip route 172.16.1.0/24 interface gigabitethernet 1/0/2
+
+ip ssh server
+
+ntp enable
+ntp broadcast-client enable
+
+licence-manager
+  host address elm.eltex-co.ru
+exit
