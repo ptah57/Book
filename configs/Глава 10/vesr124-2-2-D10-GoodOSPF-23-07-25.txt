@@ -245,7 +245,7 @@ security passwords default-expired
 
 nat source
   pool WAN
-    ip address-range 10.10.10.2
+    ip address-range 10.10.20.2
   exit
   ruleset SNAT
     to zone UNTRUST
