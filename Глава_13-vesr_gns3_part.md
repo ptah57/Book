@@ -32,7 +32,7 @@ L2. [faq.irz.net](https://faq.irz.net/routers/common/Primer_nastrojki_L2TPv3_tu
     фаерволов, поэтому его следует использовать, если в схеме есть
     устройства, выполняющие эти функции.
 
-![Рисунок 4-2Рисунок 1. Cisco Network Architecture Diagram C4C ](Media/Рис13-2.jpg)
+![Рисунок 4-2 Cisco Network Architecture Diagram C4C](Media/Рис13-2.jpg)
 
 **Порядок работы**:
 
