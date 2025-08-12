@@ -6,8 +6,7 @@
 точка-точка и работает на втором уровне сетевой модели OSI:
 
 ![Рисунок 4-1. Cтруктурированная схема VPN-ов-
-https://habrastorage.org/r/w1560/files/a6b/dc7/6da/a6bdc76dae4f4fa8967e2709d20b0ec2.png](Media/Рис13-1.png){width="4.724409448818897in"
-height="2.1125328083989503in"}
+https://habrastorage.org/r/w1560/files/a6b/dc7/6da/a6bdc76dae4f4fa8967e2709d20b0ec2.png](Media/Рис13-1.png)
 
 **L2TPv3 (Layer 2 Tunneling Protocol Version 3)** --- протокол
 туннелирования, который поддерживает инкапсуляцию трафика второго уровня
@@ -34,13 +33,6 @@ L2. [faq.irz.net](https://faq.irz.net/routers/common/Primer_nastrojki_L2TPv3_tu
     устройства, выполняющие эти функции.
 
 ![Рисунок 4-2Рисунок 1. Cisco Network Architecture Diagram C4C ](Media/Рис13-2.jpg)
-<figure>
-<img src="Media/Рис13-2.jpeg" style="width:4.72441in;height:2.4915in"
-alt="Picture background" />
-<figcaption><p>Рисунок 4-2Рисунок 1. <a
-href="https://dishcuss.com/post/C4C76B0A7E859747B01246B44A26E62F47D42CA7/Computer-Network-Design-Cisco">Cisco
-Network Architecture Diagram C4C</a></p></figcaption>
-</figure>
 
 **Порядок работы**:
 
