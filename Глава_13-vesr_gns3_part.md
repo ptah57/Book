@@ -32,7 +32,7 @@ L2. [faq.irz.net](https://faq.irz.net/routers/common/Primer_nastrojki_L2TPv3_tu
     фаерволов, поэтому его следует использовать, если в схеме есть
     устройства, выполняющие эти функции.
 
-![Рисунок 4-2 Cisco Network Architecture Diagram C4C](Media/Рис13-2.jpg)
+![ Рисунок 4-2](Media/Рис13-2.jpg)
 
 **Порядок работы**:
 
@@ -49,23 +49,12 @@ L2. [faq.irz.net](https://faq.irz.net/routers/common/Primer_nastrojki_L2TPv3_tu
 
  [fakel.io](https://fakel.io/docs/configuration/interfaces/l2tpv3/l2tpv3/)
 
-<figure>
-<img src="media/image3.jpeg" style="width:4.72441in;height:3.54357in"
-alt="Picture background" />
-<figcaption><p>Рисунок 4-3. <a
-href="https://www.slideserve.com/melvin-logan/the-tcp-ip-model-powerpoint-ppt-presentation">PPT
-- The TCP/IP Model</a></p></figcaption>
-</figure>
+![Рисунок 13-3](Media/рис13-3.jpg)
 
 **При этом внутри пакета происходит ещё одна магия инкапсуляции:**
 
-![]
-(Media/Рис13-2.jpg)
-<figcaption><p>Рисунок 4-4. <a
-href="https://studwood.net/1586304/informatika/shifrovanie_dannyh">Шифрование
-Данных - Виртуальная частная сеть (VPN), технология, принципы
-работы</a></p></figcaption>
-</figure>
+![Рисунок 13-4](Media/Рис13-4.png)
+
 
 **Конфигурация**
 
