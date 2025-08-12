@@ -6,7 +6,7 @@
 точка-точка и работает на втором уровне сетевой модели OSI:
 
 ![Рисунок 4-1. Cтруктурированная схема VPN-ов-
-https://habrastorage.org/r/w1560/files/a6b/dc7/6da/a6bdc76dae4f4fa8967e2709d20b0ec2.png](media/image1.png){width="4.724409448818897in"
+https://habrastorage.org/r/w1560/files/a6b/dc7/6da/a6bdc76dae4f4fa8967e2709d20b0ec2.png](Media/Рис13-1.png){width="4.724409448818897in"
 height="2.1125328083989503in"}
 
 **L2TPv3 (Layer 2 Tunneling Protocol Version 3)** --- протокол
@@ -33,8 +33,9 @@ L2. [faq.irz.net](https://faq.irz.net/routers/common/Primer_nastrojki_L2TPv3_tu
     фаерволов, поэтому его следует использовать, если в схеме есть
     устройства, выполняющие эти функции.
 
+![Рисунок 4-2Рисунок 1. Cisco Network Architecture Diagram C4C ](Media/Рис13-2.jpg)
 <figure>
-<img src="media/image2.jpeg" style="width:4.72441in;height:2.4915in"
+<img src="Media/Рис13-2.jpeg" style="width:4.72441in;height:2.4915in"
 alt="Picture background" />
 <figcaption><p>Рисунок 4-2Рисунок 1. <a
 href="https://dishcuss.com/post/C4C76B0A7E859747B01246B44A26E62F47D42CA7/Computer-Network-Design-Cisco">Cisco
@@ -66,9 +67,8 @@ href="https://www.slideserve.com/melvin-logan/the-tcp-ip-model-powerpoint-ppt-pr
 
 **При этом внутри пакета происходит ещё одна магия инкапсуляции:**
 
-<figure>
-<img src="media/image4.png" style="width:4.72441in;height:1.67356in"
-alt="Picture background" />
+![]
+(Media/Рис13-2.jpg)
 <figcaption><p>Рисунок 4-4. <a
 href="https://studwood.net/1586304/informatika/shifrovanie_dannyh">Шифрование
 Данных - Виртуальная частная сеть (VPN), технология, принципы
@@ -190,8 +190,7 @@ L2TPv3, и способы их решения:
 Схема коммутации для выполнения этой работы:
 
 ![Рисунок 4-5. Схема связи офиса и филиала по туннелю
-L2TPv3+IPSEC](Рис13-1.png){width="4.724409448818897in"
-height="4.508464566929134in"}
+L2TPv3+IPSEC](Media/Рис13-5.png)
 
 Конфигурация маршрутизатора, связующего офис и филиал и дающий выход в
 интернет через провайдера точно такая же как и в предыдущих главах.
