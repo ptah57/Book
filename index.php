@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+        (function (m, e, t, r, i, k, a) {
+            m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments) };
+            m[i].l = 1 * new Date();
+            for (var j = 0; j < document.scripts.length; j++) { if (document.scripts[j].src === r) { return; } }
+            k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+        })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js?id=103954742', 'ym');
+
+        ym(103954742, 'init', { ssr: true, webvisor: true, clickmap: true, ecommerce: "dataLayer", accurateTrackBounce: true, trackLinks: true });
+    </script>
+    <noscript>
+        <div><img src="https://mc.yandex.ru/watch/103954742" style="position:absolute; left:-9999px;" alt="" /></div>
+    </noscript>
+    <!-- /Yandex.Metrika counter -->
+    <link rel="canonical" href="https://es.ptah57.keenetic.pro/index.html" />
+    <meta charset="UTF-8">
+    <meta name="google-site-verification" content="uAXfaxuc8XGJrQatiu7ee5ueZ7VTe7ap9HKP460ANNQ" />
+    <meta name="yandex-verification" content="9b3d1e07776fb976" />
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="Book-vESR-GNS3" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="description" content="Author: Р.Х.Фахрутдинов,
+    РУКОВОДСТВО ДЛЯ РАБОТЫ С МАРШРУТИЗАТОРОМ VESR В СИМУЛЯТОРЕ GNS3, Category: Books, Price: Free,
+    Length: 212 pages">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>РУКОВОДСТВО ДЛЯ РАБОТЫ С МАРШРУТИЗАТОРОМ VESR В СИМУЛЯТОРЕ GNS3</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --primary-dark: #5649c0;
+            --secondary: #a29bfe;
+            --accent: #fd79a8;
+            --text: #2d3436;
+            --text-light: #636e72;
+            --background: #f8f9fa;
+            --card-bg: #ffffff;
+            --gradient: linear-gradient(120deg, #6c5ce7, #a29bfe);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 15px 40px rgba(108, 92, 231, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-image:
+                radial-gradient(circle at 5% 10%, rgba(108, 92, 231, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 95% 10%, rgba(253, 121, 168, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 50% 90%, rgba(162, 155, 254, 0.05) 0%, transparent 20%);
+        }
+
+        .container {
+            max-width: 800px;
+            width: 90%;
+            margin: 40px auto;
+            background-color: var(--card-bg);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient);
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        h1 {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 28px;
+            margin-bottom: 25px;
+            text-align: center;
+            line-height: 1.3;
+        }
+
+        p {
+            color: var(--text-light);
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .btn-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 16px 25px;
+            background: var(--gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.6s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(108, 92, 231, 0.4);
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-secondary {
+            background: var(--card-bg);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            box-shadow: none;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(108, 92, 231, 0.05);
+        }
+
+        .heart {
+            color: var(--accent);
+            font-size: 24px;
+            display: inline-block;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size: 14px;
+            color: var(--text-light);
+            text-align: center;
+        }
+
+        .decorative-element {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(120deg, rgba(108, 92, 231, 0.1), rgba(253, 121, 168, 0.1));
+            border-radius: 50%;
+            z-index: -1;
+        }
+
+        .decorative-element:nth-child(1) {
+            top: -100px;
+            right: -100px;
+        }
+
+        .decorative-element:nth-child(2) {
+            bottom: -100px;
+            left: -100px;
+            width: 250px;
+            height: 250px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+                width: 95%;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            p {
+                font-size: 16px;
+            }
+
+            .btn {
+                padding: 14px 20px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="decorative-element"></div>
+        <div class="decorative-element"></div>
+
+        <h1>РУКОВОДСТВО ДЛЯ РАБОТЫ С МАРШРУТИЗАТОРОМ VESR В СИМУЛЯТОРЕ GNS3</h1>
+        <div>
+            <a href="https://boosty.to/rinatxf/posts/ad333015-3b9e-45c4-acd8-5a2fb266fecb?share=post_link">
+                <img src='coverbook.jpg' width="311" height="470"> </a>
+            <img src='ris13-5.jpg' width="360" height="470">
+        </div>
+        <p>
+            Современные сетевые технологии требуют не только теоретических знаний,
+            но и практических навыков работы с оборудованием. Однако доступ к реальным
+            маршрутизаторам и коммутаторам зачастую ограничен, особенно на этапе обучения.
+            Выходом становится использование виртуальных сред, таких как GNS3, которые
+            позволяют моделировать сложные сети на обычном компьютере.
+            <br><br>
+            Эта книга для новичков в сетевых технологиях и посвящена работе
+            с виртуальным сервисным маршрутизатором vESR от Eltex.
+            <span class="heart">♥</span>
+        </p>
+
+        <div class="btn-container">
+            <a href="https://github.com/ptah57/Book" class="btn">
+                <i class="fab fa-github"></i> Весь проект на Github
+            </a>
+
+            <a href="download.php?format=pdf" class="btn">
+                <i class="fas fa-download"></i> Скачать книгу (PDF)
+            </a>
+
+            <a href="download.php?format=epub" class="btn">
+                <i class="fas fa-download"></i> Скачать книгу (EPUB)
+            </a>
+
+            <a href="download.php?format=fb2" class="btn">
+                <i class="fas fa-download"></i> Скачать книгу (FB2)
+            </a>
+
+            <a href="https://boosty.to/rinatxf/donate" class="btn btn-secondary">
+                <i class="fas fa-heart"></i> Поддержать на Boosty
+            </a>
+        </div>
+<div class="download-stats">
+    <p>Скачано уже:
+        <?php
+        $count_file = 'download_count.txt';
+        if (file_exists($count_file)) {
+            $counts = json_decode(file_get_contents($count_file), true);
+            echo $counts['total'] ?? 0;
+        } else {
+            echo 0;
+        }
+        ?> раз
+    </p>
+        <p class="footer">Спасибо за вашу поддержку!</p>
+    </div>
+    <footer>
+        <P style="color: hsl(271, 95%, 16%)">
+            <SCRIPT LANGUAGE="JavaScript">
+                document.write("Изменено: " + document.lastModified)
+            </SCRIPT>
+            <br> © 2025 <a href="mailto:Ptah57@mail.ru">Написать письмо автору Ptah57@mail.ru</a>
+        <p>
+            <a href="https://jigsaw.w3.org/css-validator/check/referer">
+                <img style="border:0;width:88px;height:31px" src="https://jigsaw.w3.org/css-validator/images/vcss-blue"
+                    alt="Правильный CSS!" />
+            </a>
+        </p>
+    </footer>
+</body>
+
+</html>
