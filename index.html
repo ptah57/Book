@@ -1,13 +1,36 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="google-site-verification" content="VACBF4GkaVOuKaU4bcLKdc89wiEmgEVoLQl-sTmjZlY" />
-    <meta name="yandex-verification" content="086c2efd70f3e794" />
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+        (function (m, e, t, r, i, k, a) {
+            m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments) };
+            m[i].l = 1 * new Date();
+            for (var j = 0; j < document.scripts.length; j++) { if (document.scripts[j].src === r) { return; } }
+            k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+        })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js?id=103954742', 'ym');
+
+        ym(103954742, 'init', { ssr: true, webvisor: true, clickmap: true, ecommerce: "dataLayer", accurateTrackBounce: true, trackLinks: true });
+    </script>
+    <noscript>
+        <div><img src="https://mc.yandex.ru/watch/103954742" style="position:absolute; left:-9999px;" alt="" /></div>
+    </noscript>
+    <!-- /Yandex.Metrika counter -->
+    <link rel="canonical" href="https://es.ptah57.keenetic.pro/index.html" />
+    <meta charset="UTF-8">
+    <meta name="google-site-verification" content="uAXfaxuc8XGJrQatiu7ee5ueZ7VTe7ap9HKP460ANNQ" />
+    <meta name="yandex-verification" content="9b3d1e07776fb976" />
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="Book-vESR-GNS3" />
+    <link rel="manifest" href="/site.webmanifest" />
     <meta name="description" content="Author: Р.Х.Фахрутдинов,
     РУКОВОДСТВО ДЛЯ РАБОТЫ С МАРШРУТИЗАТОРОМ VESR В СИМУЛЯТОРЕ GNS3, Category: Books, Price: Free,
     Length: 212 pages">
-    <link rel="canonical" href="https://ptah57.github.io/Book/index.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>РУКОВОДСТВО ДЛЯ РАБОТЫ С МАРШРУТИЗАТОРОМ VESR В СИМУЛЯТОРЕ GNS3</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,7 +38,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-
         :root {
             --primary: #6c5ce7;
             --primary-dark: #5649c0;
@@ -47,7 +69,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background-image: 
+            background-image:
                 radial-gradient(circle at 5% 10%, rgba(108, 92, 231, 0.05) 0%, transparent 20%),
                 radial-gradient(circle at 95% 10%, rgba(253, 121, 168, 0.05) 0%, transparent 20%),
                 radial-gradient(circle at 50% 90%, rgba(162, 155, 254, 0.05) 0%, transparent 20%);
@@ -161,9 +183,17 @@
         }
 
         @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
         }
 
         .footer {
@@ -199,15 +229,15 @@
                 padding: 30px 20px;
                 width: 95%;
             }
-            
+
             h1 {
                 font-size: 24px;
             }
-            
+
             p {
                 font-size: 16px;
             }
-            
+
             .btn {
                 padding: 14px 20px;
                 font-size: 14px;
@@ -215,44 +245,67 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="decorative-element"></div>
         <div class="decorative-element"></div>
-        
+
         <h1>РУКОВОДСТВО ДЛЯ РАБОТЫ С МАРШРУТИЗАТОРОМ VESR В СИМУЛЯТОРЕ GNS3</h1>
         <div>
             <a href="https://boosty.to/rinatxf/posts/ad333015-3b9e-45c4-acd8-5a2fb266fecb?share=post_link">
-        <img src='Обложка-книги2.png' width="311" height="470"> </a>
-        <img src='Рис13-5-1.png'width="360" height="470">
+                <img src='coverbook.jpg' width="311" height="470"> </a>
+            <img src='ris13-5.jpg' width="360" height="470">
         </div>
         <p>
-            Современные сетевые технологии требуют не только теоретических знаний, 
-            но и практических навыков работы с оборудованием. Однако доступ к реальным 
-            маршрутизаторам и коммутаторам зачастую ограничен, особенно на этапе обучения. 
-            Выходом становится использование виртуальных сред, таких как GNS3, которые 
+            Современные сетевые технологии требуют не только теоретических знаний,
+            но и практических навыков работы с оборудованием. Однако доступ к реальным
+            маршрутизаторам и коммутаторам зачастую ограничен, особенно на этапе обучения.
+            Выходом становится использование виртуальных сред, таких как GNS3, которые
             позволяют моделировать сложные сети на обычном компьютере.
             <br><br>
             Эта книга для новичков в сетевых технологиях и посвящена работе
             с виртуальным сервисным маршрутизатором vESR от Eltex.
             <span class="heart">♥</span>
         </p>
-        
+
         <div class="btn-container">
             <a href="https://github.com/ptah57/Book" class="btn">
                 <i class="fab fa-github"></i> Весь проект на Github
             </a>
-            
-            <a href="https://boosty.to/rinatxf/posts/ad333015-3b9e-45c4-acd8-5a2fb266fecb?share=post_link" class="btn">
+
+            <a href="https://es.ptah57.keenetic.pro/book/vesrgns3.pdf" class="btn">
                 <i class="fas fa-download"></i> Скачать книгу (PDF)
             </a>
-            
+
+            <a href="https://es.ptah57.keenetic.pro/book/vesrgns3.epub" class="btn">
+                <i class="fas fa-download"></i> Скачать книгу (EPUB)
+            </a>
+
+            <a href="https://es.ptah57.keenetic.pro/book/vesrgns3.fb2" class="btn">
+                <i class="fas fa-download"></i> Скачать книгу (FB2)
+            </a>
+
             <a href="https://boosty.to/rinatxf/donate" class="btn btn-secondary">
                 <i class="fas fa-heart"></i> Поддержать на Boosty
             </a>
         </div>
-        
+
         <p class="footer">Спасибо за вашу поддержку!</p>
     </div>
+    <footer>
+        <P style="color: hsl(271, 95%, 16%)">
+            <SCRIPT LANGUAGE="JavaScript">
+                document.write("Изменено: " + document.lastModified)
+            </SCRIPT>
+            <br> © 2025 <a href="mailto:Ptah57@mail.ru">Написать письмо автору Ptah57@mail.ru</a>
+        <p>
+            <a href="https://jigsaw.w3.org/css-validator/check/referer">
+                <img style="border:0;width:88px;height:31px" src="https://jigsaw.w3.org/css-validator/images/vcss-blue"
+                    alt="Правильный CSS!" />
+            </a>
+        </p>
+    </footer>
 </body>
+
 </html>
