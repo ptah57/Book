@@ -289,34 +289,39 @@
             <a href="https://boosty.to/rinatxf/donate" class="btn btn-secondary">
                 <i class="fas fa-heart"></i> Поддержать на Boosty
             </a>
-        </div>
-<div class="download-stats">
-    <p>Скачано уже:
-        <?php
-        $count_file = 'download_count.txt';
-        if (file_exists($count_file)) {
-            $counts = json_decode(file_get_contents($count_file), true);
-            echo $counts['total'] ?? 0;
-        } else {
-            echo 0;
-        }
-        ?> раз
-    </p>
-        <p class="footer">Спасибо за вашу поддержку!</p>
-    </div>
-    <footer>
-        <P style="color: hsl(271, 95%, 16%)">
-            <SCRIPT LANGUAGE="JavaScript">
-                document.write("Изменено: " + document.lastModified)
-            </SCRIPT>
-            <br> © 2025 <a href="mailto:Ptah57@mail.ru">Написать письмо автору Ptah57@mail.ru</a>
-        <p>
-            <a href="https://jigsaw.w3.org/css-validator/check/referer">
-                <img style="border:0;width:88px;height:31px" src="https://jigsaw.w3.org/css-validator/images/vcss-blue"
-                    alt="Правильный CSS!" />
+
+            <a href="https://boosty.to/rinatxf" class="btn">
+                <i class="fas fa-download"></i> Блог
             </a>
-        </p>
-    </footer>
+
+        </div>
+        <div class="download-stats">
+            <p>Скачано уже:
+                <?php
+                $count_file = 'download_count.txt';
+                if (file_exists($count_file)) {
+                    $counts = json_decode(file_get_contents($count_file), true);
+                    echo $counts['total'] ?? 0;
+                } else {
+                    echo 0;
+                }
+                ?> раз
+            </p>
+            <p class="footer">Спасибо за вашу поддержку!</p>
+        </div>
+        <footer>
+            <P style="color: hsl(271, 95%, 16%)">
+                <SCRIPT LANGUAGE="JavaScript">
+                    document.write("Изменено: " + document.lastModified)
+                </SCRIPT>
+                <br> © 2025 <a href="mailto:Ptah57@mail.ru">Написать письмо автору Ptah57@mail.ru</a>
+            <p>
+                <a href="https://jigsaw.w3.org/css-validator/check/referer">
+                    <img style="border:0;width:88px;height:31px"
+                        src="https://jigsaw.w3.org/css-validator/images/vcss-blue" alt="Правильный CSS!" />
+                </a>
+            </p>
+        </footer>
 </body>
 
 </html>
