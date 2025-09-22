@@ -120,4 +120,4 @@ IP-сети (IPMP) --- для VRRP требуются определённые 
 заключается в использовании механизма IP Failover для синхронизации
 состояний и обеспечения высокой доступности.
 
-Полный текст главы 15 на Бусти - [![Кнопка доната](https://img.shields.io/badge/Загрузить_текст_с-Boosty-6c5ce7)](https://boosty.to/rinatxf/posts/6ce42d8e-2920-4d38-9cf0-45a2f9e34a05?share=post_link)
+Полный текст главы 16 на Бусти - [![Кнопка доната](https://img.shields.io/badge/Загрузить_текст_с-Boosty-6c5ce7)](https://boosty.to/rinatxf/posts/6ce42d8e-2920-4d38-9cf0-45a2f9e34a05?share=post_link)
