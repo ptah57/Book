@@ -1,0 +1,79 @@
+hostname ce5
+
+syslog max-files 3
+syslog file-size 512
+syslog file tmpsys:syslog/default
+  severity info
+exit
+syslog console
+  virtual-serial
+exit
+
+username admin
+  password encrypted $6$wo3HRAS4r3I9kFMn$U66TheH0rhaCXZ/tvZsb0zVVT/XM7zhxUSkENue7JV8oFX4n8SakchEwUXgbid/sqXAROmMQL3/lpn54i6rMM1
+exit
+
+vlan 10
+  force-up
+exit
+vlan 20
+  force-up
+exit
+vlan 30
+  force-up
+exit
+vlan 100
+  force-up
+exit
+
+domain lookup enable
+
+bridge 1
+  vlan 100
+  mac-address a2:00:00:00:0c:e5
+  ip firewall disable
+  no spanning-tree
+  enable
+exit
+bridge 2
+  mac-address a2:00:00:00:0b:e5
+  ip firewall disable
+  no spanning-tree
+  enable
+exit
+
+interface gigabitethernet 1/0/1
+  description "UPlink-to-PE1"
+  spanning-tree disable
+exit
+interface gigabitethernet 1/0/1.100
+  bridge-group 1
+  ip firewall disable
+exit
+interface gigabitethernet 1/0/2
+  ip firewall disable
+exit
+interface gigabitethernet 1/0/2.100
+  ip firewall disable
+exit
+interface gigabitethernet 1/0/2.100.10
+  bridge-group 1
+  ip firewall disable
+  spanning-tree disable
+exit
+interface gigabitethernet 1/0/2.100.20
+  bridge-group 2
+  ip firewall disable
+  spanning-tree disable
+exit
+
+security passwords default-expired
+
+ip ssh server
+
+ntp enable
+ntp broadcast-client enable
+
+licence-manager
+  host address elm.eltex-co.ru
+exit

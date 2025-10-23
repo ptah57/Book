@@ -1,0 +1,274 @@
+hostname vesr124-1-2
+
+object-group service dhcp_service
+  port-range 67
+exit
+object-group service dhcp_client
+  port-range 68
+exit
+object-group service NTP
+  port-range 123
+exit
+object-group service DNS
+  port-range 53
+exit
+object-group service IKE
+  port-range 500
+  port-range 4500
+exit
+object-group service TRACEROUTE
+  port-range 33434-33534
+exit
+
+object-group network WAN
+  ip address-range 10.10.10.2
+exit
+object-group network LAN_NETWORK_2
+  ip address-range 172.16.2.1-172.16.2.254
+exit
+object-group network LAN_2__GW
+  ip address-range 172.16.2.1
+exit
+object-group network LAN_NETWORK_3
+  ip address-range 172.16.3.1-172.16.3.254
+exit
+
+ip vrf CUSTOM
+exit
+
+syslog max-files 3
+syslog file-size 512
+syslog file tmpsys:syslog/default
+  severity info
+exit
+syslog console
+  virtual-serial
+exit
+
+username admin
+  password encrypted $6$4aX8wuT20KFB6pbP$QJeOoVCEoJ/2OBuezoRpbA8Hxv7fyjduU6cpkyMbhgxkF9McOLKtFsx2CuG1OqvI0PY/8KfGqsKKEkGvXfbqu1
+exit
+
+domain lookup enable
+domain lookup enable vrf CUSTOM
+domain name-server 77.88.8.8
+
+security zone TRUST
+exit
+security zone UNTRUST
+exit
+
+interface gigabitethernet 1/0/1
+  description "WAN"
+  security-zone UNTRUST
+  ip address 10.10.10.2/24
+exit
+interface gigabitethernet 1/0/2
+  ip vrf forwarding CUSTOM
+  description "LAN-2"
+  ip firewall disable
+  ip address 172.16.2.1/24
+exit
+interface gigabitethernet 1/0/3
+  ip vrf forwarding CUSTOM
+  description "LAN-3"
+  ip firewall disable
+  ip address 172.16.3.1/24
+exit
+
+tunnel lt 1
+  peer lt 2
+  ip firewall disable
+  ip address 192.168.255.1/30
+  enable
+exit
+tunnel lt 2
+  peer lt 1
+  ip vrf forwarding CUSTOM
+  ip firewall disable
+  ip address 192.168.255.2/30
+  enable
+exit
+
+security zone-pair TRUST self
+  rule 1
+    description "ICMP"
+    action permit
+    match protocol icmp
+    enable
+  exit
+  rule 17
+    description "TRACEROUTE"
+    action permit
+    match protocol udp
+    match destination-port object-group TRACEROUTE
+    enable
+  exit
+  rule 19
+    action permit
+    match protocol udp
+    match destination-port object-group DNS
+    enable
+  exit
+  rule 30
+    action permit
+    match protocol udp
+    match destination-port object-group NTP
+    enable
+  exit
+  rule 40
+    action permit
+    match protocol udp
+    match source-port object-group dhcp_client
+    match destination-port object-group dhcp_service
+    enable
+  exit
+  rule 50
+    action permit
+    match protocol tcp
+    enable
+  exit
+exit
+security zone-pair TRUST UNTRUST
+  rule 10
+    description "ICMP"
+    action permit
+    match protocol icmp
+    enable
+  exit
+  rule 17
+    description "TRACEROUTE"
+    action permit
+    match protocol udp
+    match destination-port object-group TRACEROUTE
+    enable
+  exit
+  rule 20
+    action permit
+    match protocol udp
+    enable
+  exit
+  rule 30
+    action permit
+    match protocol tcp
+    enable
+  exit
+exit
+security zone-pair UNTRUST self
+  rule 10
+    description "ICMP"
+    action permit
+    match protocol icmp
+    enable
+  exit
+  rule 17
+    description "TRACEROUTE"
+    action permit
+    match protocol udp
+    match destination-port object-group TRACEROUTE
+    enable
+  exit
+  rule 18
+    action permit
+    match protocol tcp
+    match destination-port object-group DNS
+    enable
+  exit
+  rule 19
+    action permit
+    match protocol udp
+    match destination-port object-group DNS
+    enable
+  exit
+  rule 30
+    action permit
+    match protocol udp
+    match destination-port object-group NTP
+    enable
+  exit
+  rule 35
+    action permit
+    match protocol udp
+    match destination-port object-group IKE
+    enable
+  exit
+  rule 40
+    description "ESP"
+    action permit
+    match protocol esp
+    enable
+  exit
+  rule 50
+    description "AH"
+    action permit
+    match protocol ah
+    enable
+  exit
+exit
+security zone-pair UNTRUST TRUST
+  rule 1
+    description "ICMP"
+    action permit
+    match protocol icmp
+    enable
+  exit
+  rule 17
+    description "TRACEROUTE"
+    action permit
+    match protocol udp
+    match destination-port object-group TRACEROUTE
+    enable
+  exit
+exit
+
+security passwords default-expired
+
+nat source
+  pool WAN
+    ip address-range 10.10.10.2
+  exit
+  ruleset SNAT
+    to zone UNTRUST
+    rule 1
+      match source-address object-group LAN_NETWORK_2
+      action source-nat interface
+      enable
+    exit
+    rule 2
+      match source-address object-group LAN_NETWORK_3
+      action source-nat interface
+      enable
+    exit
+  exit
+exit
+
+ip dhcp-server vrf CUSTOM
+ip dhcp-server pool LAN_NETWORK-2 vrf CUSTOM
+  network 172.16.2.0/24
+  default-lease-time 003:00:00
+  address-range 172.16.2.3-172.16.2.254
+  default-router 172.16.2.1
+  dns-server 77.88.8.8
+exit
+ip dhcp-server pool LAN_NETWORK-3 vrf CUSTOM
+  network 172.16.3.0/24
+  default-lease-time 003:00:00
+  address-range 172.16.3.3-172.16.3.254
+  default-router 172.16.3.1
+  dns-server 77.88.8.8
+exit
+
+ip route 0.0.0.0/0 10.10.10.1
+ip route vrf CUSTOM 0.0.0.0/0 192.168.255.1
+ip route 172.16.2.0/24 192.168.255.2
+ip route 172.16.3.0/24 192.168.255.2
+ip route vrf CUSTOM 192.168.255.0/30 tunnel lt 2
+
+ip ssh server
+
+ntp enable
+ntp broadcast-client enable
+
+licence-manager
+  host address elm.eltex-co.ru
+exit

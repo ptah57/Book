@@ -1,0 +1,403 @@
+hostname vesr124-1-5
+
+object-group service dhcp_service
+  port-range 67
+exit
+object-group service dhcp_client
+  port-range 68
+exit
+object-group service NTP
+  port-range 123
+exit
+object-group service DNS
+  port-range 53
+exit
+object-group service IKE
+  port-range 500
+  port-range 4500
+exit
+object-group service TRACEROUTE
+  port-range 2-65530
+exit
+object-group service failover
+  port-range 3333
+exit
+
+object-group network WAN
+  ip address-range 10.10.10.4
+exit
+object-group network LAN_NETWORK
+  ip address-range 172.16.1.1-172.16.1.254
+exit
+object-group network LAN_GW
+  ip address-range 172.16.1.1
+exit
+
+syslog max-files 3
+syslog file-size 512
+syslog file tmpsys:syslog/default
+  severity info
+exit
+
+username admin
+  password encrypted $6$C9bFJv8MO9xkPk9j$4XofsTE9SR7Z2sgzPI5fDP4RGvZS.2aTZm7po.vF34HyFA1rDlZeLbC21bq0N4SsXX/d4O8y5cSaiz55qzNXP/
+exit
+
+domain lookup enable
+
+security zone TRUST
+exit
+security zone UNTRUST
+exit
+
+router ospf log-adjacency-changes
+router ospf 1
+  area 0.0.0.0
+    network 172.16.1.0/24
+    network 192.168.100.0/24
+    network 192.168.200.0/24
+    network 172.16.2.0/24
+    network 172.16.3.0/24
+    enable
+  exit
+  enable
+exit
+
+interface gigabitethernet 1/0/1
+  description "WAN"
+  security-zone UNTRUST
+  ip address 10.10.10.4/24
+  vrrp id 2
+  vrrp ip 10.10.10.2/24
+  vrrp priority 10
+  vrrp group 1
+  vrrp
+exit
+interface gigabitethernet 1/0/2
+  description "LAN"
+  security-zone TRUST
+  ip address 172.16.1.3/24
+  ip ospf instance 1
+  vrrp id 1
+  vrrp ip 172.16.1.1/32
+  vrrp priority 10
+  vrrp group 1
+  vrrp
+exit
+interface gigabitethernet 1/0/3
+  description "VRRPlink"
+  security-zone TRUST
+  ip address 192.168.30.2/30
+exit
+
+tunnel vti 5
+  security-zone UNTRUST
+  local address 10.10.10.2
+  remote address 10.10.20.2
+  ip address 192.168.100.1/24
+  ip ospf instance 1
+  ip ospf priority 255
+  ip ospf
+  enable
+exit
+tunnel vti 6
+  mtu 1400
+  security-zone UNTRUST
+  local address 10.10.10.2
+  remote address 10.10.30.2
+  ip address 192.168.200.1/24
+  ip ospf instance 1
+  ip ospf priority 200
+  ip ospf neighbor 10.10.30.2
+  ip ospf
+  ip tcp adjust-mss 1380
+  enable
+exit
+
+ip failover
+  local-address 192.168.30.2
+  remote-address 192.168.30.1
+  vrrp-group 1
+exit
+
+security zone-pair TRUST self
+  rule 1
+    description "ICMP"
+    action permit
+    match protocol icmp
+    enable
+  exit
+  rule 12
+    action permit
+    match protocol ospf
+    enable
+  exit
+  rule 17
+    description "TRACEROUTE"
+    action permit
+    match protocol udp
+    match destination-port object-group TRACEROUTE
+    enable
+  exit
+  rule 19
+    action permit
+    match protocol udp
+    match destination-port object-group DNS
+    enable
+  exit
+  rule 30
+    action permit
+    match protocol udp
+    match destination-port object-group NTP
+    enable
+  exit
+  rule 40
+    action permit
+    match protocol udp
+    match source-port object-group dhcp_client
+    match destination-port object-group dhcp_service
+    enable
+  exit
+  rule 50
+    action permit
+    match protocol tcp
+    enable
+  exit
+  rule 66
+    action permit
+    match protocol vrrp
+    enable
+  exit
+  rule 67
+    action permit
+    match protocol udp
+    match destination-port object-group failover
+    enable
+  exit
+  rule 68
+    action permit
+    match protocol tcp
+    enable
+  exit
+  rule 69
+    action permit
+    match protocol udp
+    enable
+  exit
+exit
+security zone-pair TRUST UNTRUST
+  rule 10
+    description "ICMP"
+    action permit
+    match protocol icmp
+    enable
+  exit
+  rule 17
+    description "TRACEROUTE"
+    action permit
+    match protocol udp
+    match destination-port object-group TRACEROUTE
+    enable
+  exit
+  rule 20
+    action permit
+    match protocol udp
+    enable
+  exit
+  rule 30
+    action permit
+    match protocol tcp
+    enable
+  exit
+exit
+security zone-pair UNTRUST self
+  rule 10
+    description "ICMP"
+    action permit
+    match protocol icmp
+    enable
+  exit
+  rule 12
+    action permit
+    match protocol ospf
+    enable
+  exit
+  rule 17
+    description "TRACEROUTE"
+    action permit
+    match protocol udp
+    match destination-port object-group TRACEROUTE
+    enable
+  exit
+  rule 18
+    action permit
+    match protocol tcp
+    match destination-port object-group DNS
+    enable
+  exit
+  rule 19
+    action permit
+    match protocol udp
+    match destination-port object-group DNS
+    enable
+  exit
+  rule 30
+    action permit
+    match protocol udp
+    match destination-port object-group NTP
+    enable
+  exit
+  rule 35
+    action permit
+    match protocol udp
+    match destination-port object-group IKE
+    enable
+  exit
+  rule 40
+    description "ESP"
+    action permit
+    match protocol esp
+    enable
+  exit
+  rule 50
+    description "AH"
+    action permit
+    match protocol ah
+    enable
+  exit
+  rule 66
+    action permit
+    match protocol vrrp
+    enable
+  exit
+  rule 67
+    action permit
+    match protocol udp
+    match destination-port object-group failover
+    enable
+  exit
+exit
+security zone-pair UNTRUST TRUST
+  rule 1
+    description "ICMP"
+    action permit
+    match protocol icmp
+    enable
+  exit
+  rule 17
+    description "TRACEROUTE"
+    action permit
+    match protocol udp
+    match destination-port object-group TRACEROUTE
+    enable
+  exit
+exit
+security zone-pair UNTRUST UNTRUST
+  rule 1
+    action permit
+    enable
+  exit
+exit
+
+security ike proposal ike_prop1
+  authentication algorithm md5
+  encryption algorithm aes128
+  dh-group 2
+exit
+
+security ike policy ike_pol1
+  pre-shared-key ascii-text encrypted AC94107EA75F5AFF
+  proposal ike_prop1
+exit
+
+security ike gateway ike_gw1
+  version v2-only
+  ike-policy ike_pol1
+  mode route-based
+  mobike disable
+  bind-interface vti 5
+exit
+security ike gateway ike_gw2
+  version v2-only
+  ike-policy ike_pol1
+  mode route-based
+  mobike disable
+  bind-interface vti 6
+exit
+
+security ipsec proposal ipsec_prop1
+  authentication algorithm md5
+  encryption algorithm aes128
+  pfs dh-group 2
+exit
+
+security ipsec policy ipsec_pol1
+  proposal ipsec_prop1
+exit
+
+security ipsec vpn ipsec1
+  ike establish-tunnel route
+  ike gateway ike_gw1
+  ike ipsec-policy ipsec_pol1
+  enable
+exit
+security ipsec vpn ipsec2
+  ike establish-tunnel route
+  ike gateway ike_gw2
+  ike ipsec-policy ipsec_pol1
+  enable
+exit
+
+security passwords default-expired
+
+ip firewall failover
+  sync-type unicast
+  port 3333
+  enable
+exit
+
+nat source
+  pool WAN
+    ip address-range 10.10.10.4
+  exit
+  ruleset SNAT
+    to zone UNTRUST
+    rule 1
+      match source-address object-group LAN_NETWORK
+      action source-nat interface
+      enable
+    exit
+    rule 2
+      match source-address address-range 172.16.2.1-172.16.3.254
+      action source-nat off
+      enable
+    exit
+  exit
+exit
+
+ip dhcp-server
+ip dhcp-server pool LAN_NETWORK
+  network 172.16.1.0/24
+  default-lease-time 003:00:00
+  address-range 172.16.1.100-172.16.1.254
+  default-router 172.16.1.1
+  dns-server 77.88.8.8
+exit
+ip dhcp-server failover
+  mode active-standby
+  role secondaty
+  enable
+exit
+
+ip route 0.0.0.0/0 10.10.10.1
+ip route 10.10.20.0/24 10.10.20.1
+ip route 10.10.30.0/24 10.10.30.1
+
+ip ssh server
+
+ntp enable
+ntp broadcast-client enable
+
+licence-manager
+  host address elm.eltex-co.ru
+exit

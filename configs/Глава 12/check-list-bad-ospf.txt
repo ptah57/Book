@@ -1,0 +1,500 @@
+ПРивет, Дэйв. Эти два маршрутизара соединены туннеляем mgre+PSEC+eBGP. я хочу доьвать еще и OSPF.  Но ьне устанавливается соседство между ними.  Как думаешь, в чем причина?
+Привет! Давай разберёмся с проблемой отсутствия OSPF-соседства между маршрутизаторами через mGRE+IPsec+eBGP.
+
+Основные проблемы и их решения:
+Проверка базовой связности через туннель:
+
+Убедитесь, что туннель GRE поднят (show interface tunnel X).
+
+Проверьте, что IPsec SA установлены (show security ipsec sa).
+
+Проверьте ping между туннельными адресами (192.168.100.1 и 192.168.100.2).
+
+NHRP и multicast:
+
+На маршрутизаторе vesr124-2-1 (hub) NHRP настроен корректно, но на vesr124-2-2 (spoke) есть статическое отображение ip nhrp map 192.168.100.1 10.10.10.2. Это нормально, но убедитесь, что multicast работает через туннель.
+
+OSPF использует multicast-адрес 224.0.0.5. Проверьте, что пакеты OSPF не блокируются:
+
+bash
+security zone-pair UNTRUST self
+  rule 9
+    description "OSPF"
+    action permit
+    match protocol ospf  # Убедитесь, что это разрешено
+    enable
+  exit
+Приоритет OSPF:
+
+На vesr124-2-1 (hub) приоритет OSPF установлен в 255 (ip ospf priority 255), что делает его DR. На vesr124-2-2 приоритет 0 (ip ospf priority 0), что означает, что он никогда не станет DR/BDR. Это корректно для hub-and-spoke, но убедитесь, что на hub есть другие соседи (если они есть).
+
+Фильтрация OSPF:
+
+Проверьте, что OSPF-пакеты не фильтруются ACL или zone-pair policies:
+
+Разрешены ли порты OSPF (89/TCP/UDP) в object-group service OSPF?
+
+Правила security zone-pair разрешают OSPF-трафик (см. выше).
+
+Настройки OSPF:
+
+Оба маршрутизатора используют OSPF process 1 и area 0, что корректно.
+
+Убедитесь, что туннельные интерфейсы добавлены в OSPF:
+
+bash
+interface tunnel X
+  ip ospf instance 1  # Проверьте, что OSPF включён
+  ip ospf             # Эта строка должна быть
+exit
+MTU и фрагментация:
+
+MTU туннеля установлен в 1416 (mtu 1416), что нормально для IPsec. Но если есть проблемы, попробуйте уменьшить его или проверить фрагментацию:
+
+bash
+ping 192.168.100.1 size 1400 df-bit  # Проверка PMTU
+Логи и диагностика:
+
+Включите логи OSPF:
+
+bash
+router ospf log-adjacency-changes detail
+Проверьте логи:
+
+bash
+show log | include OSPF
+Что проверить в первую очередь:
+Пинг между туннельными адресами:
+Если ping не работает, проблема в туннеле или IPsec.
+
+Статус OSPF-соседей:
+
+bash
+show ip ospf neighbor
+Если соседства нет, проверьте логи OSPF.
+
+Multicast-трафик:
+OSPF использует multicast. Убедитесь, что ip nhrp multicast dynamic разрешён на обоих концах.
+
+Закрытые порты:
+Проверьте, что порт 89/UDP (OSPF) не блокируется межсетевым экраном.
+
+Вывод:
+Скорее всего, проблема связана с multicast-трафиком или фильтрацией OSPF-пакетов. Начните с проверки связности и логов OSPF. Если нужно, приведите вывод команд show ip ospf neighbor и show log | include OSPF.
+
+С туннелями все хорошо. есть связность по bgp. нету соседства по OSPF 
+vesr124-2-2# sh ip nhrp peers
+ Flags: E - unique, R - nhs, U - used, L - lower-up
+        C - connected, G - group, Q - qos, N - nat
+        P - protected, I - Redirect-ignored, X - undefined
+
+Tunnel address         NBMA address       Tunnel      Expire      Created          Type              Flags
+                                                      (h:m:s)     (d,h:m:s)     
+--------------------   ----------------   ---------   ---------   --------------   ---------------   ----------
+192.168.100.1          10.10.10.2         gre 10      --          00,00:01:37      static            RULCP
+vesr124-2-2# sh ip route bgp
+B     * 172.16.1.0/24      [170]             via 192.168.100.1 on gre 10       [bgp65008 17:53:46] (AS65005?)
+vesr124-2-2# ping 192.168.100.1
+PING 192.168.100.1 (192.168.100.1) 56 bytes of data.
+!!!!!
+--- 192.168.100.1 ping statistics ---
+5 packets transmitted, 5 received, 0% packet loss, time 4006ms
+rtt min/avg/max/mdev = 1.628/4.478/6.214/1.524 ms
+vesr124-2-2# ping 172.16.1.1
+PING 172.16.1.1 (172.16.1.1) 56 bytes of data.
+!!!!!
+--- 172.16.1.1 ping statistics ---
+5 packets transmitted, 5 received, 0% packet loss, time 4006ms
+rtt min/avg/max/mdev = 1.022/3.179/4.972/1.702 ms
+vesr124-2-2# sh ip ospf neighbors
+Router ID        Pri  State          DTime  Interface          Router IP
+---------        ---  -----          -----  -----------------  ---------
+10.10.10.2       255  Init/Other     00:34  gre 10             192.168.100.1
+vesr124-2-2#
+Проблема в том, что OSPF-соседство между маршрутизаторами застревает в состоянии Init/Other. Это указывает на то, что маршрутизатор vesr124-2-2 получает Hello-пакеты от vesr124-2-1, но не может завершить процесс установления соседства.
+
+Основные причины и решения:
+1. Несовпадение OSPF-параметров
+Проверьте, что на обоих маршрутизаторах совпадают:
+
+Area ID (должна быть 0.0.0.0 на обоих устройствах).
+
+Hello и Dead Intervals (по умолчанию 10 и 40 секунд для broadcast/multicast).
+
+Authentication (если используется, ключи должны совпадать).
+
+MTU (должна быть одинаковой на туннелях, у вас 1416).
+
+Как проверить:
+
+bash
+show ip ospf interface gre 10
+(Сравните вывод на обоих маршрутизаторах.)
+
+2. Multicast-трафик заблокирован
+OSPF использует multicast (224.0.0.5 для Hello). Хотя NHRP разрешает multicast (ip nhrp multicast dynamic), возможно, его блокирует:
+
+Zone-pair policy (проверьте, что OSPF разрешён в UNTRUST self).
+
+ACL или фильтрация на интерфейсе.
+
+Решение:
+Убедитесь, что в security zone-pair UNTRUST self есть правило:
+
+bash
+rule 9
+  description "OSPF"
+  action permit
+  match protocol ospf
+  enable
+exit
+3. Проблема с NHRP или туннелем
+Хотя BGP работает, OSPF может быть чувствителен к:
+
+NHRP mapping (у вас настроен статический ip nhrp map 192.168.100.1 10.10.10.2, что нормально).
+
+TTL (у вас ttl 18, что допустимо).
+
+IPsec и фрагментация (попробуйте уменьшить MTU до 1400 для теста).
+
+Проверка:
+
+bash
+show security ipsec sa  # Убедитесь, что есть активные SA
+ping 192.168.100.1 size 1400 df-bit  # Проверка PMTU
+4. OSPF не включён на туннеле
+Убедитесь, что на обоих маршрутизаторах OSPF активирован на туннельном интерфейсе:
+
+bash
+interface gre X
+  ip ospf instance 1
+  ip ospf  # Эта команда должна быть!
+exit
+5. Ошибка в конфигурации OSPF
+Проверьте, что router-id не конфликтует.
+
+Убедитесь, что сетевые объявления (network в OSPF) корректны.
+
+Как проверить:
+
+bash
+show ip ospf
+show ip ospf interface brief
+Что делать дальше?
+Проверьте логи OSPF:
+
+bash
+show log | include OSPF
+(Ищите ошибки типа "OSPF-5-ADJCHG" или "DD packet mismatch".)
+
+Включите debug:
+
+bash
+debug ip ospf hello
+debug ip ospf adj
+(Затем проверьте, отправляются/принимаются ли Hello.)
+
+Попробуйте временно отключить IPsec:
+
+bash
+security ipsec vpn ipsec1 disable
+(Если OSPF заработает — проблема в IPsec-фильтрации.)
+
+Вывод
+Скорее всего, проблема в multicast-трафике (заблокирован OSPF) или несовпадении OSPF-параметров (Hello/Dead Interval, MTU).
+Рекомендую:
+✅ Проверить show ip ospf interface gre 10 на обоих маршрутизаторах.
+✅ Убедиться, что OSPF разрешён в zone-pair policies.
+✅ Включить debug и проверить логи.
+
+Если после проверки проблема останется — пришлите вывод:
+
+show ip ospf interface gre 10 (с обоих устройств).
+
+show running-config | include ospf (фрагмент конфига).
+
+This response is AI-generated, for reference only.
+vesr124-2-1# sh ip ospf interface gre 5
+Interface:                     gre 5
+Internet Address:              192.168.100.0/24
+Router ID:                     10.10.10.2
+Network Type:                  broadcast
+Area:                          0.0.0.0 (0)
+Interface has:                 no authentication
+Transmit:                      1
+State:                         DR
+Priority:                      255
+Cost mode:                     Auto calculation
+Reference bandwidth:           100000 KBps
+Interface bandwidth:           100 KBps
+Cost:                          1000
+ECMP weight:                   1
+Hello timer:                   10
+Wait timer:                    40
+Dead timer:                    40
+Retransmit timer:              5
+Designated router (ID):        10.10.10.2
+Designated router (IP):        192.168.100.1
+Backup designated router (ID): 0.0.0.0
+Backup designated router (IP): 0.0.0.0
+Neighbor Count:                0
+Adjacent neighbor count:       0
+
+vesr124-2-2# show ip ospf interface gre 10
+Interface:                     gre 10
+Internet Address:              192.168.100.0/24
+Router ID:                     10.10.20.2
+Network Type:                  broadcast
+Area:                          0.0.0.0 (0)
+Interface has:                 no authentication
+Transmit:                      1
+State:                         DROther
+Priority:                      0
+Cost mode:                     Auto calculation
+Reference bandwidth:           100000 KBps
+Interface bandwidth:           100 KBps
+Cost:                          1000
+ECMP weight:                   1
+Hello timer:                   10
+Wait timer:                    40
+Dead timer:                    40
+Retransmit timer:              5
+Designated router (ID):        0.0.0.0
+Designated router (IP):        0.0.0.0
+Backup designated router (ID): 0.0.0.0
+Backup designated router (IP): 0.0.0.0
+Neighbor Count:                1
+Adjacent neighbor count:       0
+   Adjacent with neighbor:     10.10.10.2
+
+vesr124-2-2# sh run routing  ospf
+router ospf log-adjacency-changes
+router ospf 1
+  area 0.0.0.0
+    network 192.168.100.0/24
+    enable
+  exit
+  enable
+exit
+
+
+vesr124-2-2# sh running-config  tunnels
+tunnel gre 10
+  ttl 18
+  mtu 1400
+  multipoint
+  ip firewall disable
+  local address 10.10.20.2
+  ip address 192.168.100.2/24
+  ip ospf instance 1
+  ip ospf priority 0
+  ip ospf
+  ip tcp adjust-mss 1380
+  ip nhrp holding-time 300
+  ip nhrp shortcut
+  ip nhrp map 192.168.100.1 10.10.10.2
+  ip nhrp nhs 192.168.100.1
+  ip nhrp ipsec ipsec1 static
+  ip nhrp ipsec ipsec_spoke dynamic
+  ip nhrp multicast dynamic
+  ip nhrp enable
+  enable
+exit
+
+
+vesr124-2-1# sh run routing  ospf
+router ospf log-adjacency-changes
+router ospf 1
+  area 0.0.0.0
+    network 172.16.1.0/24
+    network 172.16.2.0/24
+    network 172.16.3.0/24
+    network 192.168.100.0/24
+    enable
+  exit
+  enable
+exit
+
+
+vesr124-2-1# sh run tunnels
+tunnel gre 5
+  ttl 18
+  mtu 1400
+  multipoint
+  ip firewall disable
+  local interface gigabitethernet 1/0/1
+  ip address 192.168.100.1/24
+  ip ospf instance 1
+  ip ospf priority 255
+  ip ospf
+  ip tcp adjust-mss 1380
+  ip nhrp ipsec ipsec1 dynamic
+  ip nhrp multicast dynamic
+  ip nhrp enable
+  enable
+exit
+На основании предоставленных данных проблема с OSPF-соседством через mGRE+IPsec заключается в несоответствии Network Type на туннельных интерфейсах и отсутствии корректного DR/BDR выбора в broadcast-среде. Вот детальный анализ и решение:
+
+1. Несоответствие Network Type
+На vesr124-2-1 (Hub):
+
+bash
+Network Type: broadcast
+State: DR
+На vesr124-2-2 (Spoke):
+
+bash
+Network Type: broadcast
+State: DROther
+При этом DR/BDR не избраны (все поля 0.0.0.0), а соседство застревает в Init/Other.
+
+Почему это проблема?
+В broadcast-сети OSPF требует корректного выбора DR/BDR. Если DR не избран, соседство не установится.
+
+Для mGRE (особенно hub-and-spoke) рекомендуется использовать point-to-multipoint, чтобы избежать зависимости от DR/BDR.
+
+Решение:
+Измените Network Type на point-to-multipoint на обоих маршрутизаторах:
+
+bash
+interface gre 5  ! На vesr124-2-1
+  ip ospf network point-to-multipoint
+exit
+
+interface gre 10  ! На vesr124-2-2
+  ip ospf network point-to-multipoint
+exit
+2. Проверка multicast и NHRP
+Хотя ip nhrp multicast dynamic настроен, убедитесь, что OSPF-пакеты (224.0.0.5/6) не блокируются:
+
+bash
+show security zone-pair UNTRUST self | include ospf
+Если правила нет, добавьте:
+
+bash
+security zone-pair UNTRUST self
+  rule 9
+    description "OSPF"
+    action permit
+    match protocol ospf
+    enable
+  exit
+exit
+3. Сетевые объявления (network) в OSPF
+На vesr124-2-1 объявлены сети:
+
+bash
+network 172.16.1.0/24
+network 192.168.100.0/24
+На vesr124-2-2 объявлена только:
+
+bash
+network 192.168.100.0/24
+Это корректно, но убедитесь, что интерфейс gre 10 включён в OSPF (у вас есть ip ospf instance 1 и ip ospf).
+
+4. MTU и фрагментация
+MTU на туннелях уменьшено до 1400, что правильно для IPsec.
+
+Проверьте, нет ли потерь OSPF-пакетов:
+
+bash
+ping 192.168.100.1 size 1400 df-bit
+5. Дополнительные проверки
+Router ID:
+
+vesr124-2-1: 10.10.10.2
+
+vesr124-2-2: 10.10.20.2
+Конфликтов нет.
+
+Hello/Dead Timers:
+Совпадают (10/40), что правильно.
+
+Итоговые шаги:
+Измените Network Type на point-to-multipoint на обоих туннелях.
+
+Перезапустите OSPF после изменений:
+
+bash
+clear ip ospf process
+Проверьте соседство:
+
+bash
+show ip ospf neighbor
+Ожидаемый вывод:
+
+bash
+Router ID        Pri  State           DTime  Interface      Router IP
+10.10.10.2       255  Full/DR        00:30  gre 10         192.168.100.1
+Примечание:
+Если проблема сохраняется, включите debug и проверьте логи:
+
+bash
+debug ip ospf adj
+debug ip ospf hello
+show log | include OSPF
+Ищите ошибки типа:
+
+"DD packet mismatch" (несовпадение параметров).
+
+"OSPF-5-ADJCHG: Neighbor Down" (причины сброса соседства).
+
+Браво! добавление команды ip ospf network point-to-multipoint  все исправило:
+vesr124-2-1# sh ip ospf neighbors
+Router ID        Pri  State          DTime  Interface          Router IP
+---------        ---  -----          -----  -----------------  ---------
+10.10.20.2       0    Full/PtP       00:32  gre 5              192.168.100.2
+vesr124-2-1#
+
+vesr124-2-2# sh ip ospf neighbors
+Router ID        Pri  State          DTime  Interface          Router IP
+---------        ---  -----          -----  -----------------  ---------
+10.10.10.2       255  Full/PtP       00:35  gre 10             192.168.100.1
+vesr124-2-2# sh ip rou ospf
+O E2    192.168.100.0/24   [150/1000/10000]  via 192.168.100.1 on gre 10       [ospf1 18:46:12 from 10.10.10.2]  (10.10.10.2)
+O     * 192.168.100.2/32   [150/0]           dev gre 10                        [ospf1 18:45:56 from 10.10.20.2]  (10.10.20.2)
+O E2  * 172.16.1.0/24      [150/1000/10000]  via 192.168.100.1 on gre 10       [ospf1 18:46:12 from 10.10.10.2]  (10.10.10.2)
+O       192.168.100.1/32   [150/1000]        via 192.168.100.1 on gre 10       [ospf1 18:46:12 from 10.10.10.2]  (10.10.10.2)
+vesr124-2-2#
+Ты умничка!  Я целый день юился над этой ршибкой. А в Руководстве не видел этого примеяания. Ты где это нашел?
+Рад, что всё заработало! 😊
+
+Ты молодец, что не сдавался и искал решение — именно так и становятся крутыми инженерами.
+
+Откуда я знал про point-to-multipoint?
+Опыт с mGRE и DMVPN:
+
+В хабо-споковых туннелях (как у тебя) broadcast часто приводит к проблемам с DR/BDR, особенно если спикеры не видят друг друга.
+
+point-to-multipoint исключает выбор DR и упрощает OSPF поверх GRE.
+
+Документация Cisco/Eltex:
+
+В мануалах по OSPF и DMVPN (например, Cisco OSPF over GRE) явно указано, что для mGRE лучше использовать point-to-multipoint.
+
+Логика протокола:
+
+В broadcast-сети OSPF ждёт выбор DR, но если спикеры не могут общаться напрямую (как в твоём случае), процесс ломается.
+
+point-to-multipoint имитирует связь "точка-точка" для каждого соседа, избегая зависимости от DR.
+
+Почему это не было очевидно?
+В большинстве руководств OSPF рассматривается для Ethernet/LAN, где broadcast — норма.
+
+Для туннелей (особенно mGRE) тонкости часто опускают, потому что:
+
+Либо подразумевают, что ты знаешь про DMVPN.
+
+Либо дают общие примеры без глубокого погружения.
+
+Что запомнить на будущее?
+mGRE + OSPF = point-to-multipoint (или non-broadcast с ручным указанием соседей).
+
+Всегда проверяй show ip ospf interface — если видишь DR/BDR = 0.0.0.0, значит, проблема в Network Type.
+
+Документация — не истина в последней инстанции. Часто решения кроются в опыте и сообществах (как наш диалог 😉).
+
+Финал
+Ты круто разобрался с проблемой, и теперь этот кейс будет твоим козырем в настройке OSPF поверх mGRE. Если ещё что-то забудешь — просто вспомни этот случай.
+
+Удачи в следующих сетевых подвигах! 🚀
