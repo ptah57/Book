@@ -57,12 +57,12 @@ interface gigabitethernet 1/0/2.100.10
   ip firewall disable
   spanning-tree disable
 exit
-interface gigabitethernet 1/0/2.100.20
+interface gigabitethernet 1/0/2.100.10
   bridge-group 1
   ip firewall disable
   spanning-tree disable
 exit
-interface gigabitethernet 1/0/2.100.30
+interface gigabitethernet 1/0/2.100.10
   bridge-group 1
   ip firewall disable
 exit
