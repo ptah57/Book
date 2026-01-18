@@ -2,7 +2,6 @@
 <html lang="ru">
   <head>
     <meta charset="UTF-8" />
-    <!-- Yandex.Metrika counter -->
     <script type="text/javascript">
       (function (m, e, t, r, i, k, a) {
         m[i] =
@@ -47,7 +46,6 @@
         />
       </div>
     </noscript>
-    <!-- /Yandex.Metrika counter -->
     <link rel="canonical" href="https://es.ptah57.keenetic.pro/index.html" />
     <meta charset="UTF-8" />
     <meta
@@ -59,17 +57,14 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <meta name="apple-mobile-web-app-title" content="Book-vESR-GNS3" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta
       name="description"
-      content="Author: Р.Х.Фахрутдинов,
-    Лаборатория сетевого инженера: GNS3, vESR и OpenConnect, Category: Books, Price: Free,
-    Length: 212 pages"
+      content="Авторские руководства по сетевым технологиям: Eltex vESR в GNS3 и OpenConnect VPN Server на Linux. Скачать бесплатно."
     />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
-      Лаборатория сетевого инженера: GNS3, vESR и OpenConnect
+      Сетевые руководства: vESR в GNS3 и OpenConnect VPN
     </title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -150,11 +145,6 @@
         position: relative;
       }
 
-      .container:hover {
-        transform: translateY(-5px);
-        box-shadow: var(--shadow-hover);
-      }
-
       .header {
         background: var(--gradient);
         color: white;
@@ -184,32 +174,54 @@
         position: relative;
         line-height: 1.3;
       }
+      
+      h2 {
+        font-family: "Montserrat", sans-serif;
+        font-weight: 600;
+        font-size: 1.6rem;
+        margin-bottom: 1.5rem;
+        color: var(--primary-dark);
+        border-bottom: 2px solid var(--secondary);
+        padding-bottom: 10px;
+        display: inline-block;
+      }
 
       .content {
         padding: 3rem;
       }
 
-      .qr-cover {
-        flex: 1;
-        min-width: 300px;
-        text-align: center;
-        transition: var(--transition);
+      /* Стили для разделения книг */
+      .book-section {
+        margin-bottom: 4rem;
+        padding-bottom: 2rem;
+        border-bottom: 1px solid #eee;
+      }
+      
+      .book-section:last-of-type {
+        border-bottom: none;
+        margin-bottom: 2rem;
       }
 
       .book-container {
         display: flex;
         flex-wrap: wrap;
         gap: 2rem;
-        margin-bottom: 2.5rem;
-        align-items: center;
-        justify-content: center;
+        margin-bottom: 1.5rem;
+        align-items: flex-start;
       }
 
       .book-cover {
-        flex: 1;
-        min-width: 300px;
+        flex: 0 0 311px;
         text-align: center;
         transition: var(--transition);
+      }
+      
+      /* Адаптация для мобильных */
+      @media (max-width: 700px) {
+          .book-cover {
+              flex: 1;
+              min-width: 100%;
+          }
       }
 
       .book-cover:hover {
@@ -220,6 +232,7 @@
         max-width: 100%;
         border-radius: 10px;
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        margin-bottom: 10px;
       }
 
       .description {
@@ -229,33 +242,49 @@
 
       .description p {
         color: var(--gray);
-        margin-bottom: 1.5rem;
-        font-size: 1.1rem;
+        margin-bottom: 1rem;
+        font-size: 1.05rem;
         line-height: 1.7;
+      }
+      
+      .description ul {
+          margin-bottom: 1rem;
+          padding-left: 1.5rem;
+          color: var(--gray);
+      }
+      
+      .description li {
+          margin-bottom: 0.5rem;
       }
 
       .btn-container {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 1.2rem;
-        margin-top: 2rem;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+        margin-top: 1.5rem;
       }
 
       .btn {
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 12px;
-        padding: 1.2rem 1.5rem;
+        gap: 10px;
+        padding: 1rem 1.2rem;
         background: var(--gradient);
         color: white;
         text-decoration: none;
         border-radius: 12px;
         font-weight: 600;
+        font-size: 0.95rem;
         transition: var(--transition);
         box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
         position: relative;
         overflow: hidden;
+      }
+      
+      .btn-ocserv {
+         background: linear-gradient(135deg, #2ec4b6 0%, #0d5c63 100%);
+         box-shadow: 0 4px 15px rgba(46, 196, 182, 0.3);
       }
 
       .btn::before {
@@ -276,11 +305,44 @@
 
       .btn:hover {
         transform: translateY(-3px);
-        box-shadow: 0 8px 20px rgba(67, 97, 238, 0.4);
       }
 
       .btn:hover::before {
         left: 100%;
+      }
+      
+      /* Секция донатов */
+      .donate-section {
+          background-color: #f0f7ff;
+          border-radius: 15px;
+          padding: 2rem;
+          margin-top: 1rem;
+          text-align: center;
+          border: 1px solid #dbeafe;
+      }
+      
+      .donate-content {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          justify-content: center;
+          gap: 2rem;
+      }
+      
+      .donate-text {
+          flex: 1;
+          min-width: 300px;
+          text-align: left;
+      }
+      
+      .donate-qr {
+          flex: 0 0 211px;
+      }
+      
+      .donate-qr img {
+          border-radius: 10px;
+          border: 5px solid white;
+          box-shadow: 0 5px 15px rgba(0,0,0,0.05);
       }
 
       .btn-secondary {
@@ -288,35 +350,29 @@
         box-shadow: 0 4px 15px rgba(247, 37, 133, 0.3);
       }
 
-      .btn-secondary:hover {
-        box-shadow: 0 8px 20px rgba(247, 37, 133, 0.4);
-      }
-
       .heart {
         color: var(--accent);
-        font-size: 1.3rem;
-        display: inline-block;
         animation: pulse 1.5s infinite;
-        margin: 0 0.2rem;
       }
 
       @keyframes pulse {
-        0% {
-          transform: scale(1);
-        }
-        50% {
-          transform: scale(1.1);
-        }
-        100% {
-          transform: scale(1);
-        }
+        0% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); }
       }
 
       .footer {
-        margin-top: 2.5rem;
+        margin-top: 1.5rem;
         text-align: center;
         color: var(--gray);
-        font-size: 0.95rem;
+        font-size: 0.9rem;
+      }
+      
+      .stats-text {
+          font-size: 0.85rem;
+          color: var(--gray);
+          margin-top: 10px;
+          text-align: center;
       }
 
       footer {
@@ -331,49 +387,14 @@
       footer a {
         color: var(--primary);
         text-decoration: none;
-        transition: var(--transition);
-      }
-
-      footer a:hover {
-        color: var(--accent);
-        text-decoration: underline;
-      }
-
-      .css-validator {
-        margin-top: 1rem;
       }
 
       @media (max-width: 768px) {
-        .content {
-          padding: 2rem 1.5rem;
-        }
-
-        h1 {
-          font-size: 1.8rem;
-        }
-
-        .header {
-          padding: 2rem 1.5rem;
-        }
-
-        .btn {
-          padding: 1rem 1.2rem;
-          font-size: 0.95rem;
-        }
-      }
-
-      @media (max-width: 480px) {
-        h1 {
-          font-size: 1.5rem;
-        }
-
-        .book-container {
-          flex-direction: column;
-        }
-
-        .btn-container {
-          grid-template-columns: 1fr;
-        }
+        .content { padding: 2rem 1.5rem; }
+        h1 { font-size: 1.6rem; }
+        h2 { font-size: 1.3rem; }
+        .donate-content { flex-direction: column-reverse; text-align: center; }
+        .donate-text { text-align: center; }
       }
     </style>
   </head>
@@ -381,165 +402,128 @@
   <body>
     <div class="container">
       <div class="header">
-        <h1>Лаборатория сетевого инженера: GNS3, vESR и OpenConnect</h1>
+        <h1>СЕТЕВЫЕ ТЕХНОЛОГИИ НА ПРАКТИКЕ:<br>VESR В GNS3 И OPENCONNECT VPN</h1>
       </div>
 
       <div class="content">
-        <div class="book-container">
-          <div class="book-cover">
-            <a
-              href="https://boosty.to/rinatxf/posts/ad333015-3b9e-45c4-acd8-5a2fb266fecb?share=post_link"
-            >
-              <img src="coverbook-1.png" width="311" height="470" alt="Обложка книги" />
-            </a>
-          
-            <a
-              href="https://boosty.to/rinatxf/posts/e1459ab7-6ccf-4286-b9f2-3c493709d942?share=post_link"
-            >
-              <img src="coverbook-2.png" width="311" height="470" alt="Обложка книги" />
-            </a>
-
-            <a
-              href="https://boosty.to/rinatxf/posts/e1459ab7-6ccf-4286-b9f2-3c493709d942?share=post_link"
-            >
-              <img src=" ris12-1.png" width="311" height="470" alt="Схема сети" />
-            </a>
-           
-            <a href=#ocserv-section >
-               <img src="ocservcoverbook.png" width="311" height="470" alt="Схема сети" />
-            </a>
-            
-          </div>
-
-          <p>
-              Современные сетевые технологии требуют не только теоретических
-              знаний, но и практических навыков работы с оборудованием. Однако
-              доступ к реальным маршрутизаторам и коммутаторам зачастую
-              ограничен, особенно на этапе обучения. Выходом становится
-              использование виртуальных сред, таких как GNS3, которые позволяют
-              моделировать сложные сети на обычном компьютере.
-            </p>
-            <p>
-              Эта книга для новичков в сетевых технологиях и посвящена работе с
-              виртуальным сервисным маршрутизатором vESR от Eltex.
-              
-            </p>
-          
+        
+        <div class="book-section">
+            <h2>1. Маршрутизатор Eltex vESR в GNS3</h2>
+            <div class="book-container">
+              <div class="book-cover">
+                <div style="display:flex; gap:10px; overflow-x:auto; padding-bottom:10px; justify-content:center;">
+                    <a href="https://boosty.to/rinatxf/posts/ad333015-3b9e-45c4-acd8-5a2fb266fecb?share=post_link">
+                      <img src="coverbook-1.png" width="140" alt="Обложка 1" />
+                    </a>
+                    <a href="https://boosty.to/rinatxf/posts/e1459ab7-6ccf-4286-b9f2-3c493709d942?share=post_link">
+                      <img src="coverbook-2.png" width="140" alt="Обложка 2" />
+                    </a>
+                </div>
+                <div style="font-size: 0.8rem; color: #888; margin-top:5px;">Нажмите для увеличения</div>
+              </div>
+    
+              <div class="description">
+                <p>
+                  Современные сетевые технологии требуют практических навыков. Доступ к реальному оборудованию ограничен, поэтому мы используем виртуальные среды.
+                </p>
+                <p>
+                  <strong>О чем книга:</strong> Пошаговое руководство для новичков и инженеров по работе с виртуальным маршрутизатором vESR от Eltex в симуляторе GNS3. Настройка, схемы, лабораторные работы.
+                </p>
+                
+                <div class="btn-container">
+                  <a href="https://es.ptah57.keenetic.pro/download.php?format=pdf" class="btn">
+                    <i class="fas fa-file-pdf"></i> Скачать PDF
+                  </a>
+                  <a href="https://es.ptah57.keenetic.pro/download.php?format=epub" class="btn">
+                    <i class="fas fa-book"></i> Скачать EPUB
+                  </a>
+                  <a href="https://github.com/ptah57/Book" class="btn" style="background: #333;">
+                    <i class="fab fa-github"></i> Проект на Github
+                  </a>
+                </div>
+                
+                <div class="stats-text">
+                    Скачано раз: <img src="https://es.ptah57.keenetic.pro/image_counter.php" style="vertical-align: middle;" alt="Счетчик" />
+                </div>
+              </div>
+            </div>
         </div>
 
-        <div class="btn-container">
-          <a href="https://github.com/ptah57/Book" class="btn">
-            <i class="fab fa-github"></i> Весь проект на Github
-          </a>
+        <div class="book-section" id="ocserv-section">
+            <h2>2. OpenConnect VPN Server (OCserv)</h2>
+            <div class="book-container">
+              <div class="book-cover">
+                <a href="#">
+                   <img src="ocservcoverbook.png" width="311" height="470" alt="Обложка OCserv" />
+                </a>
+              </div>
+    
+              <div class="description">
+                <p>
+                   <strong>Практическое руководство по развёртыванию VPN корпоративного уровня.</strong>
+                   Это не «быстрый гайд за вечер», а учебное пособие для тех, кто хочет понимать суть процессов.
+                </p>
+                <p>В книге разобраны:</p>
+                <ul>
+                    <li>Подготовка среды (VMware + GNS3) и установка Debian 12 без «подводных камней».</li>
+                    <li>Сборка и компиляция OCserv из исходников.</li>
+                    <li>Настройка PKI (генерация сертификатов) и аутентификация.</li>
+                    <li>Подключение клиентов Windows и дебаг.</li>
+                </ul>
+                <p><em>⚠️ Ранний доступ: материал обновляется и дополняется.</em></p>
 
-          <a
-            href="https://es.ptah57.keenetic.pro/download.php?format=pdf"
-            class="btn"
-          >
-            <i class="fas fa-download"></i> Скачать книгу (PDF)
-          </a>
+                <div class="btn-container">
+                    <a href="https://es.ptah57.keenetic.pro/download2.php?format=pdf" class="btn btn-ocserv">
+                        <i class="fas fa-download"></i> Скачать книгу (PDF)
+                    </a>
+                    <a href="https://boosty.to/rinatxf" class="btn">
+                        <i class="fas fa-blog"></i> Блог с доп. главами
+                    </a>
+                </div>
 
-          <a
-            href="https://es.ptah57.keenetic.pro/download.php?format=epub"
-            class="btn"
-          >
-            <i class="fas fa-download"></i> Скачать книгу (EPUB)
-          </a>
-
-          <a
-            href="https://es.ptah57.keenetic.pro/download.php?format=fb2"
-            class="btn"
-          >
-            <i class="fas fa-download"></i> Скачать книгу (FB2)
-          </a>
-
-          <a href="https://boosty.to/rinatxf" class="btn">
-            <i class="fas fa-download"></i> Блог с второй книгой и дополнительными главами к книге
-          </a>
-
-          <a href="https://boosty.to/rinatxf/donate" class="btn btn-secondary">
-                <i class="fas fa-heart"></i> Поддержать на Boosty
-            </a>
-
+                <div class="stats-text">
+                    Скачано раз: <img src="https://es.ptah57.keenetic.pro/image_counter2.php" style="vertical-align: middle;" alt="Счетчик" />
+                </div>
+              </div>
+            </div>
         </div>
-        <div class="download-stats">
-          <p class="footer">
-            Скачано уже:
-            <img
-              src="https://es.ptah57.keenetic.pro/image_counter.php"
-              alt="Счетчик загрузок"
-            />
-            раз
-          </p>
+
+        <div class="donate-section">
+            <h3>Поддержать автора</h3>
+            <div class="donate-content">
+                <div class="donate-text">
+                    <p>
+                        Коллеги, я пишу эти гайды, чтобы вы не тратили часы на сбор информации по форумам.
+                        Если эти книги помогли вам настроить лабу, сдать экзамен или внедрить решение на работе — буду рад любой поддержке.
+                    </p>
+                    <p>
+                        Ваш донат — это мотивация обновлять материалы и писать новые главы.
+                    </p>
+                    
+                    <div class="btn-container" style="margin-top: 1rem; grid-template-columns: 1fr;">
+                        <a href="https://boosty.to/rinatxf/donate" class="btn btn-secondary">
+                            <i class="fas fa-heart"></i> Поддержать на Boosty
+                        </a>
+                    </div>
+                </div>
+                <div class="donate-qr">
+                    <p style="margin-bottom: 10px; font-weight: 600; font-size: 0.9rem;">Сбер / СБП</p>
+                    <img src="my_QR.png" width="180" height="180" alt="QR для доната" />
+                </div>
+            </div>
         </div>
-        <p class="book-container">
-          Съэкономил вам время на разбор документации? <br>
-          Коллеги, я написал этот гайд, чтобы вам не пришлось собирать информацию по крупицам
-           из форумов и мануалов. Если эта книга помогла вам настроить лабу, сдать экзамен или разобраться с Eltex vESR на работе
-           — буду рад любой вашей поддержке. Ваш донат — это не просто «спасибо», 
-           это мотивация для меня обновлять материал и писать новую книгу.<br> 
-           🍺 Угостить автора пивом/кофе за сэкономленные часы дебага напрямую на карту Сбер по СБП и QR-коду, через мобильное приложения телефона.
-          </p>
-        <p class="qr-cover">
-        <img src="my_QR.png" width="211" height="211" alt="QR для доната" />
-        </p>
-        <p class="footer">
-        Спасибо за вашу поддержку!
-        </p>
+
       </div>
     </div>
 
-    <p id="ocserv-section">
-    Публикую предварительную версию книги "OpenConnect VPN Server: руководство по OCserv для Linux" 
-    в лабораторной среде GNS3. <a href="https://es.ptah57.keenetic.pro/download2.php?format=pdf"
-     class="btn">
-                <i class="fas fa-download"></i> Скачать книгу (PDF)
-            о развёртывании OpenConnect Server </a> 
-
-Это не “быстрый гайд за вечер” и не пересказ документации.Книга задумывается как практическое учебное руководство для тех, кто хочет понять, что именно происходит в системе и сети, а не просто повторить команды.
-
-В этих главах разобраны:
-
-подготовка среды виртуализации (VMware + GNS3);корректная установка Debian 12 из ISO, без cloud-образов и скрытых ловушек;базовая сетевая схема, пригодная для дальнейшей работы с VPN;контрольные точки, позволяющие понять, что всё сделано правильно и можно идти дальше;обновление системы и установка всех необходимых пакетов для сборки и компиляции сервера OCserv;Получение, сборка и компиляция сервера OCserv;Генерация сертификатов (PKI);Конфигурация файла /etc/ocserv/ocserv.confg;Настройка аутентификации;Тестирование подключения клиента в Windows.
-
-Материал ориентирован на:
-
-начинающих администраторов;инженеров, которые только осваивают GNS3 и Linux;тех, кто устал от инструкций в стиле «сделайте так, у вас должно заработать».
-
-⚠️ Важно:Это ранний доступ. Структура уже выстроена, логика зафиксирована, но текст продолжает редактироваться и дополняться. Обратная связь от читателей будет учтена в финальной версии книги.
-
-Если вам важно не просто “поднять VPN”, а разобраться, почему он работает именно так — этот материал для вас.
-</p>
-        <div class="download-stats">
-          <p class="footer">
-            Скачано "Мануал по Ocserv" уже:
-            <img
-              src="https://es.ptah57.keenetic.pro/image_counter2.php"
-              alt="Счетчик загрузок"
-            />
-            раз
-          </p>
-        </div>
-
     <footer>
       <p style="color: var(--primary-dark)">
-        <script language="JavaScript">
-          document.write("Изменено: " + document.lastModified);
-        </script>
-        <br />
-        © 2025
-        <a href="mailto:Ptah57@mail.ru"
-          >Написать письмо автору Ptah57@mail.ru</a
-        >
+        © 2025 <a href="mailto:Ptah57@mail.ru">Ptah57@mail.ru</a>
       </p>
-      <p class="css-validator">
-        <a href="https://jigsaw.w3.org/css-validator/check/referer">
-          <img
-            style="border: 0; width: 88px; height: 31px"
-            src="https://jigsaw.w3.org/css-validator/images/vcss-blue"
-            alt="Правильный CSS!"
-          />
-        </a>
+      <p style="font-size: 0.8rem; margin-top: 5px;">
+        <script language="JavaScript">
+          document.write("Обновлено: " + document.lastModified);
+        </script>
       </p>
     </footer>
   </body>
