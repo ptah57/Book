@@ -213,7 +213,7 @@
       .book-cover {
         flex: 0 0 311px;
         text-align: center;
-        /* transition удален отсюда, чтобы не было конфликтов */
+        transition: var(--transition);
       }
       
       @media (max-width: 700px) {
@@ -223,21 +223,18 @@
           }
       }
 
-      /* --- СТИЛИ ДЛЯ КАРТИНОК И ЗУМА (ИСПРАВЛЕНО) --- */
+      /* Стили для кликабельных картинок */
       .zoom-img {
-          cursor: zoom-in; /* Меняет курсор на лупу */
-          transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Пружинистый эффект */
+          cursor: pointer;
+          transition: transform 0.3s ease;
           border-radius: 10px;
           box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
       }
       
       .zoom-img:hover {
-          transform: scale(1.1); /* Увеличено до 10% */
-          box-shadow: 0 20px 30px rgba(0, 0, 0, 0.15);
-          z-index: 10;
-          position: relative;
+          transform: scale(1.03);
+          box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
       }
-      /* ----------------------------------------------- */
 
       .description {
         flex: 1;
@@ -415,7 +412,6 @@
           max-height: 90vh;
           box-shadow: 0 0 20px rgba(0,0,0,0.5);
           border-radius: 5px;
-          cursor: zoom-out;
       }
       
       .lightbox-close {
@@ -427,7 +423,6 @@
           font-weight: bold;
           cursor: pointer;
           transition: 0.3s;
-          z-index: 10000;
       }
       
       .lightbox-close:hover {
@@ -523,67 +518,3 @@
         <div class="donate-section">
             <h3>Поддержать автора</h3>
             <div class="donate-content">
-                <div class="donate-text">
-                    <p>
-                        Коллеги, я пишу эти гайды, чтобы вы не тратили часы на сбор информации по форумам.
-                        Если эти книги помогли вам настроить лабу, сдать экзамен или внедрить решение на работе — буду рад любой поддержке.
-                    </p>
-                    <p>
-                        Ваш донат — это мотивация обновлять материалы и писать новые главы.
-                    </p>
-                    
-                    <div class="btn-container" style="margin-top: 1rem; grid-template-columns: 1fr;">
-                        <a href="https://boosty.to/rinatxf/donate" class="btn btn-secondary">
-                            <i class="fas fa-heart"></i> Поддержать на Boosty
-                        </a>
-                    </div>
-                </div>
-                <div class="donate-qr">
-                    <p style="margin-bottom: 10px; font-weight: 600; font-size: 0.9rem;">Сбер / СБП</p>
-                    <img src="my_QR.png" width="180" height="180" alt="QR для доната" />
-                </div>
-            </div>
-        </div>
-
-      </div>
-    </div>
-
-    <footer>
-      <p style="color: var(--primary-dark)">
-        © 2025 <a href="mailto:Ptah57@mail.ru">Ptah57@mail.ru</a>
-      </p>
-      <p style="font-size: 0.8rem; margin-top: 5px;">
-        <script language="JavaScript">
-          document.write("Обновлено: " + document.lastModified);
-        </script>
-      </p>
-    </footer>
-
-    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
-        <span class="lightbox-close">&times;</span>
-        <img class="lightbox-content" id="lightbox-img">
-    </div>
-
-    <script>
-        function openLightbox(src) {
-            var lightbox = document.getElementById('lightbox');
-            var lightboxImg = document.getElementById('lightbox-img');
-            lightboxImg.src = src;
-            lightbox.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeLightbox() {
-            var lightbox = document.getElementById('lightbox');
-            lightbox.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-
-        document.addEventListener('keydown', function(event) {
-            if (event.key === "Escape") {
-                closeLightbox();
-            }
-        });
-    </script>
-  </body>
-</html>

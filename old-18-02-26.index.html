@@ -143,7 +143,6 @@
         overflow: hidden;
         transition: var(--transition);
         position: relative;
-        z-index: 1;
       }
 
       .header {
@@ -191,6 +190,7 @@
         padding: 3rem;
       }
 
+      /* Стили для разделения книг */
       .book-section {
         margin-bottom: 4rem;
         padding-bottom: 2rem;
@@ -213,9 +213,10 @@
       .book-cover {
         flex: 0 0 311px;
         text-align: center;
-        /* transition удален отсюда, чтобы не было конфликтов */
+        transition: var(--transition);
       }
       
+      /* Адаптация для мобильных */
       @media (max-width: 700px) {
           .book-cover {
               flex: 1;
@@ -223,21 +224,16 @@
           }
       }
 
-      /* --- СТИЛИ ДЛЯ КАРТИНОК И ЗУМА (ИСПРАВЛЕНО) --- */
-      .zoom-img {
-          cursor: zoom-in; /* Меняет курсор на лупу */
-          transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Пружинистый эффект */
-          border-radius: 10px;
-          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      .book-cover:hover {
+        transform: scale(1.03);
       }
-      
-      .zoom-img:hover {
-          transform: scale(1.1); /* Увеличено до 10% */
-          box-shadow: 0 20px 30px rgba(0, 0, 0, 0.15);
-          z-index: 10;
-          position: relative;
+
+      .book-cover img {
+        max-width: 100%;
+        border-radius: 10px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        margin-bottom: 10px;
       }
-      /* ----------------------------------------------- */
 
       .description {
         flex: 1;
@@ -315,6 +311,7 @@
         left: 100%;
       }
       
+      /* Секция донатов */
       .donate-section {
           background-color: #f0f7ff;
           border-radius: 15px;
@@ -353,6 +350,17 @@
         box-shadow: 0 4px 15px rgba(247, 37, 133, 0.3);
       }
 
+      .heart {
+        color: var(--accent);
+        animation: pulse 1.5s infinite;
+      }
+
+      @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); }
+      }
+
       .footer {
         margin-top: 1.5rem;
         text-align: center;
@@ -388,51 +396,6 @@
         .donate-content { flex-direction: column-reverse; text-align: center; }
         .donate-text { text-align: center; }
       }
-
-      /* Styles for Lightbox (Zoom) */
-      .lightbox {
-          display: none;
-          position: fixed;
-          z-index: 9999;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background-color: rgba(0, 0, 0, 0.9);
-          align-items: center;
-          justify-content: center;
-          opacity: 0;
-          transition: opacity 0.3s ease;
-      }
-      
-      .lightbox.active {
-          display: flex;
-          opacity: 1;
-      }
-      
-      .lightbox-content {
-          max-width: 90%;
-          max-height: 90vh;
-          box-shadow: 0 0 20px rgba(0,0,0,0.5);
-          border-radius: 5px;
-          cursor: zoom-out;
-      }
-      
-      .lightbox-close {
-          position: absolute;
-          top: 20px;
-          right: 30px;
-          color: white;
-          font-size: 40px;
-          font-weight: bold;
-          cursor: pointer;
-          transition: 0.3s;
-          z-index: 10000;
-      }
-      
-      .lightbox-close:hover {
-          color: var(--accent);
-      }
     </style>
   </head>
   <?php include 'functions.php'; ?>
@@ -449,10 +412,14 @@
             <div class="book-container">
               <div class="book-cover">
                 <div style="display:flex; gap:10px; overflow-x:auto; padding-bottom:10px; justify-content:center;">
-                    <img src="coverbook-1.png" width="140" class="zoom-img" onclick="openLightbox(this.src)" alt="Обложка 1" />
-                    <img src="coverbook-2.png" width="140" class="zoom-img" onclick="openLightbox(this.src)" alt="Обложка 2" />
+                    <a href="https://boosty.to/rinatxf/posts/ad333015-3b9e-45c4-acd8-5a2fb266fecb?share=post_link">
+                      <img src="coverbook-1.png" width="140" alt="Обложка 1" />
+                    </a>
+                    <a href="https://boosty.to/rinatxf/posts/e1459ab7-6ccf-4286-b9f2-3c493709d942?share=post_link">
+                      <img src="coverbook-2.png" width="140" alt="Обложка 2" />
+                    </a>
                 </div>
-                <div style="font-size: 0.8rem; color: #888; margin-top:5px; cursor:default;">Нажмите на обложку для увеличения</div>
+                <div style="font-size: 0.8rem; color: #888; margin-top:5px;">Нажмите для увеличения</div>
               </div>
     
               <div class="description">
@@ -486,8 +453,9 @@
             <h2>2. OpenConnect VPN Server (OCserv)</h2>
             <div class="book-container">
               <div class="book-cover">
-                <img src="ocservcoverbook.png" width="311" height="470" class="zoom-img" onclick="openLightbox(this.src)" alt="Обложка OCserv" />
-                <div style="font-size: 0.8rem; color: #888; margin-top:5px; cursor:default;">Нажмите на обложку для увеличения</div>
+                <a href="#">
+                   <img src="ocservcoverbook.png" width="311" height="470" alt="Обложка OCserv" />
+                </a>
               </div>
     
               <div class="description">
@@ -558,32 +526,5 @@
         </script>
       </p>
     </footer>
-
-    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
-        <span class="lightbox-close">&times;</span>
-        <img class="lightbox-content" id="lightbox-img">
-    </div>
-
-    <script>
-        function openLightbox(src) {
-            var lightbox = document.getElementById('lightbox');
-            var lightboxImg = document.getElementById('lightbox-img');
-            lightboxImg.src = src;
-            lightbox.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeLightbox() {
-            var lightbox = document.getElementById('lightbox');
-            lightbox.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-
-        document.addEventListener('keydown', function(event) {
-            if (event.key === "Escape") {
-                closeLightbox();
-            }
-        });
-    </script>
   </body>
 </html>
