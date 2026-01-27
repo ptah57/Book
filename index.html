@@ -433,7 +433,10 @@
       .lightbox-close:hover {
           color: var(--accent);
       }
-    </style>
+      html {
+          scroll-behavior: smooth;
+      }
+</style>
   </head>
   <?php include 'functions.php'; ?>
   <body>
@@ -454,6 +457,7 @@
   </div>
 
   <div style="display:flex; gap:10px; overflow-x:auto; padding-bottom:10px; justify-content:center; align-items: flex-end;">
+    <a href="#ocserv"></a>
     <img src="OcservCoverBook2.jpg" width="140" class="zoom-img" onclick="openLightbox(this.src)" alt="Обложка 3" />
     
     <div style="width: 140px; display: flex; flex-direction: column; align-items: center;">
@@ -493,8 +497,9 @@
             </div>
         </div>
 
-        <div class="book-section" id="ocserv-section">
-            <h2>2. OpenConnect VPN Server (OCserv)</h2>
+        <div class="book-section" id="ocserv">
+
+          <h2>2. OpenConnect VPN Server (OCserv) </h2>
             <div class="book-container">
               <div class="book-cover">
                 <img src="ocservcoverbook.png" width="311" height="470" class="zoom-img" onclick="openLightbox(this.src)" alt="Обложка OCserv" />
@@ -529,9 +534,10 @@
                 </div>
               </div>
             </div>
-        </div>
+  
+          </div>
 
-        <div class="donate-section" id=""qr">
+        <div class="donate-section" >
             <h3>Поддержать автора</h3>
             <div class="donate-content">
                 <div class="donate-text">
